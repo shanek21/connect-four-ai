@@ -1,0 +1,8 @@
+sudo: required
+language: cpp
+
+before_install:
+- sudo pip install cpplint
+
+script:
+- cpplint src/**/*.cpp include/**/*.cpp
