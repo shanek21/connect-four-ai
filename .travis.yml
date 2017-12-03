@@ -5,5 +5,5 @@ before_install:
 - sudo pip install cpplint
 
 script:
-- cpplint src/**/*.cpp include/**/*.cpp
+- cpplint src/*.cpp include/*.h
 - make
