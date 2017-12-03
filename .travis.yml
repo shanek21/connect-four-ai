@@ -6,3 +6,4 @@ before_install:
 
 script:
 - cpplint src/**/*.cpp include/**/*.cpp
+- make
