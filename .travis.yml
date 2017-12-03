@@ -2,8 +2,10 @@ sudo: required
 language: cpp
 
 before_install:
+- sudo apt -qq update
 - sudo pip install cpplint
+- sudo apt install -y cppcheck
 
 script:
-- cpplint src/*.cpp include/*.h
+- ./scripts/lint.sh
 - make
