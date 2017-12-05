@@ -1,5 +1,5 @@
 // This tells Catch to provide a main() - only do this in one cpp file
-#include "../lib/catch.hpp"
+#include "../lib/catch.hpp"  // cppcheck-suppress
 #include "../include/add_numbers.h"
 
 TEST_CASE("Numbers are added together") {
