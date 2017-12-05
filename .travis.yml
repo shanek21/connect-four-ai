@@ -8,4 +8,5 @@ before_install:
 
 script:
 - ./scripts/lint.sh
+- make test
 - make
