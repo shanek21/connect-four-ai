@@ -5,9 +5,12 @@
 
 CC = g++ # explicitly set the compiler
 SRCDIR = src
+TESTDIR = test
+INCDIR = include
+LIBDIR = lib
 
 # -g includes extra debugging info, -Wall gives possible warnings in src code.
-CFLAGS = -g -Wall
+CFLAGS = -g -std=c++11 -Wall
 
 all: connect_four
 
@@ -17,6 +20,16 @@ all: connect_four
 connect_four: $(SRCDIR)/connect_four.cpp
 	$(CC) $(CFLAGS) $(SRCDIR)/connect_four.cpp -o connect_four
 
+test_main.o: $(TESTDIR)/test_main.cpp
+	$(CC) $(CFLAGS) $(TESTDIR)/test_main.cpp -c
+
+test_exec: test_main.o $(TESTDIR)/test.cpp $(SRCDIR)/add_numbers.cpp $(INCDIR)/add_numbers.h
+	$(CC) $(CFLAGS) test_main.o $(TESTDIR)/test.cpp $(SRCDIR)/add_numbers.cpp -o test_exec
+
+test: test_exec
+	./test_exec
+
 # Remove the executable
 clean:
-	rm connect_four
+	rm -f connect_four test_exec
+	rm *.o
