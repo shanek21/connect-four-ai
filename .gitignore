@@ -3,3 +3,8 @@
 
 # Our binary executable
 connect_four
+
+# Our unit test executable
+test_exec
+
+*.o
