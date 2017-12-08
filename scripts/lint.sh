@@ -6,6 +6,6 @@ cpplint --recursive src/ include/ test/
 echo
 echo Running cppcheck...
 # cppcheck doesn't know about built in c++ libraries, this supresses warnings
-cppcheck --enable=all --suppress='*:lib/*' src/ include/ test/
+cppcheck --enable=all --suppress=missingIncludeSystem src/ include/ test/
 echo
 echo Passed linters

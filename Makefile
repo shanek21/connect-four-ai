@@ -15,7 +15,7 @@ CFLAGS = -g -std=c++11 -Wall
 all: connect_four
 
 # Compile and link connect_four.cpp to connect_four, using our compiler and
-#   and flags
+#   flags
 # Depends on the connect_four.cpp file
 connect_four: $(SRCDIR)/connect_four.cpp
 	$(CC) $(CFLAGS) $(SRCDIR)/connect_four.cpp -o connect_four
