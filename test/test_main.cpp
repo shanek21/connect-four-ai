@@ -1,2 +1,2 @@
 #define CATCH_CONFIG_MAIN
-#include "../lib/catch.hpp"  // cppcheck-suppress
+#include "../lib/catch.hpp"

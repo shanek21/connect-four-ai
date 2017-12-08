@@ -7,4 +7,5 @@ connect_four
 # Our unit test executable
 test_exec
 
+# Don't commit compiled object files
 *.o
