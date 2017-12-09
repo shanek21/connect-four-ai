@@ -6,6 +6,7 @@
 CC = g++ # explicitly set the compiler
 SRCDIR = src
 TESTDIR = test
+OBJDIR = obj
 INCDIR = include
 LIBDIR = lib
 
@@ -20,11 +21,12 @@ all: connect_four
 connect_four: $(SRCDIR)/connect_four.cpp
 	$(CC) $(CFLAGS) $(SRCDIR)/connect_four.cpp -o connect_four
 
-test_main.o: $(TESTDIR)/test_main.cpp
-	$(CC) $(CFLAGS) $(TESTDIR)/test_main.cpp -c
+$(OBJDIR)/test_main.o: $(TESTDIR)/test_main.cpp
+	mkdir -p $(OBJDIR)
+	$(CC) $(CFLAGS) $(TESTDIR)/test_main.cpp -c -o $(OBJDIR)/test_main.o
 
-test_exec: test_main.o $(TESTDIR)/test.cpp $(SRCDIR)/add_numbers.cpp $(INCDIR)/add_numbers.h
-	$(CC) $(CFLAGS) test_main.o $(TESTDIR)/test.cpp $(SRCDIR)/add_numbers.cpp -o test_exec
+test_exec: $(OBJDIR)/test_main.o $(TESTDIR)/test.cpp $(SRCDIR)/add_numbers.cpp $(INCDIR)/add_numbers.h
+	$(CC) $(CFLAGS) $(OBJDIR)/test_main.o $(TESTDIR)/test.cpp $(SRCDIR)/add_numbers.cpp -o test_exec
 
 test: test_exec
 	./test_exec
@@ -32,4 +34,4 @@ test: test_exec
 # Remove the executable
 clean:
 	rm -f connect_four test_exec
-	rm *.o
+	rm -f $(OBJDIR)/*.o
