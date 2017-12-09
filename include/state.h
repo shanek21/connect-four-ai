@@ -71,6 +71,7 @@ class State {
   void incrementNumMoves();
 
   void placeTile(TileType color, int row, int col);
+  static State boardFromArray(char A[][]);
 };
 
 std::ostream& operator<<(std::ostream& os, const State::TileType& t);
