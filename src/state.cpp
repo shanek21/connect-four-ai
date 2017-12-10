@@ -124,18 +124,18 @@ void State::placeTile(State::TileType color, int row, int col) {
     blackBoard[(row * (WIDTH + 1)) + col] = 1;
 }
 
-State State::boardFromArray(char A[][]) {
-  State S();
-  int rows = sizeof(A) / sizeof(A[0]);
-  int cols = sizeof(A[0]);
-  for (int r = 0; r < rows; r++) {
-    for (int c = 0; c < cols; c++) {
-      if (A[r][c] == 'r') S.placeTile(TileType::Red, r, c);
-      if (A[r][c] == 'b') S.placeTile(TileType::Black, r, c);
-    }
-  }
-  return S;
-}
+/* State State::boardFromArray(char A[][]) { */
+/*   State S(); */
+/*   int rows = sizeof(A) / sizeof(A[0]); */
+/*   int cols = sizeof(A[0]); */
+/*   for (int r = 0; r < rows; r++) { */
+/*     for (int c = 0; c < cols; c++) { */
+/*       if (A[r][c] == 'r') S.placeTile(TileType::Red, r, c); */
+/*       if (A[r][c] == 'b') S.placeTile(TileType::Black, r, c); */
+/*     } */
+/*   } */
+/*   return S; */
+/* } */
 
 std::ostream& operator<<(std::ostream& os, const State::TileType& t) {
   if (t == State::Red) return os << "R";
@@ -144,11 +144,11 @@ std::ostream& operator<<(std::ostream& os, const State::TileType& t) {
 }
 
 State State::boardFromNums(std::string nums) {
-  State S();
+  State S;
   for (std::string::iterator it = nums.begin(); it != nums.end(); ++it) {
     char n = *it;
     // Convert the char to a number and 0-index it
-    S.play(S.getNextTileColor(), n - '1');
+    S = S.play(S.getNextTileColor(), n - '1');
   }
   return S;
 }
