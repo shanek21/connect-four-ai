@@ -41,8 +41,12 @@ $(OBJ_DIR)/test_main.o: $(TEST_DIR)/test_main.cpp
 $(TEST_DIR)/state: $(OBJ_DIR)/test_main.o $(TEST_DIR)/state.cpp $(OBJ_DIR)/state.o $(INC_DIR)/state.h
 	$(CC) $(C_FLAGS) $(OBJ_DIR)/test_main.o $(TEST_DIR)/state.cpp $(OBJ_DIR)/state.o -o $(TEST_DIR)/state
 
-test: directories $(TEST_DIR)/state
+$(TEST_DIR)/negamax: $(OBJ_DIR)/test_main.o $(TEST_DIR)/negamax.cpp $(SRC_DIR)/negamax.cpp $(INC_DIR)/negamax.h
+	$(CC) $(C_FLAGS) $(OBJ_DIR)/test_main.o $(TEST_DIR)/negamax.cpp $(SRC_DIR)/negamax.cpp -o $(TEST_DIR)/negamax
+
+test: directories $(TEST_DIR)/state $(TEST_DIR)/negamax
 	./$(TEST_DIR)/state
+	./$(TEST_DIR)/negamax
 
 # Remove the executable
 clean:

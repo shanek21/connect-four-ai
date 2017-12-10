@@ -3,6 +3,7 @@
 
 
 #include <bitset>
+#include <string>
 
 
 class State {
@@ -61,6 +62,7 @@ class State {
   * @returns the color of the next tile to be played
   */
   TileType getNextTileColor() const;
+  static State boardFromNums(std::string nums);
 
  protected:
   TileBoard redBoard;
@@ -71,8 +73,7 @@ class State {
   void incrementNumMoves();
 
   void placeTile(TileType color, int row, int col);
-  static State boardFromArray(char A[][]);
-  static State boardFromNums(char* nums);
+  /* static State boardFromArray(char A[][]); */
 };
 
 std::ostream& operator<<(std::ostream& os, const State::TileType& t);
