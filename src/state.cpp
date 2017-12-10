@@ -142,3 +142,13 @@ std::ostream& operator<<(std::ostream& os, const State::TileType& t) {
   if (t == State::Black) return os << "B";
   return os << "E";
 }
+
+State State::boardFromNums(std::string nums) {
+  State S();
+  for (std::string::iterator it = nums.begin(); it != nums.end(); ++it) {
+    char n = *it;
+    // Convert the char to a number and 0-index it
+    S.play(S.getNextTileColor(), n - '1');
+  }
+  return S;
+}

@@ -72,6 +72,7 @@ class State {
 
   void placeTile(TileType color, int row, int col);
   static State boardFromArray(char A[][]);
+  static State boardFromNums(char* nums);
 };
 
 std::ostream& operator<<(std::ostream& os, const State::TileType& t);
