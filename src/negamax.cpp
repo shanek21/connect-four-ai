@@ -1,5 +1,5 @@
-#include "../include/negamax.h";
-#include "../include/board.h";
+#include "../include/negamax.h"
+#include "../include/state.h"
 
 /**
  * @param S - the current state to evaluate
@@ -13,7 +13,7 @@ int negamax(const State S) {
   int width = State::WIDTH;
 
   for (int x = 0; x < width; x++) {
-    if (S.isPlayable(x) && S.isWinningPlay(x)) {
+    if (S.isPlayable(x) && S.isWinningPlay(S.getNextTileColor(), x)) {
       // If there is a winning move, return 1
       return 1;
     }

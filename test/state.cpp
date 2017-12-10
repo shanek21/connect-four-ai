@@ -150,3 +150,13 @@ TEST_CASE("isWinningPlay()") {
     REQUIRE(S.isWinningPlay(State::TileType::Red, 2));
   }
 }
+
+TEST_CASE("boardFromNums()") {
+  State S = State::boardFromNums("123123");
+  REQUIRE(S.getTile(State::HEIGHT - 1, 0) == State::TileType::Red);
+  REQUIRE(S.getTile(State::HEIGHT - 2, 0) == State::TileType::Black);
+  REQUIRE(S.getTile(State::HEIGHT - 1, 1) == State::TileType::Black);
+  REQUIRE(S.getTile(State::HEIGHT - 2, 1) == State::TileType::Red);
+  REQUIRE(S.getTile(State::HEIGHT - 1, 2) == State::TileType::Red);
+  REQUIRE(S.getTile(State::HEIGHT - 2, 2) == State::TileType::Black);
+}
