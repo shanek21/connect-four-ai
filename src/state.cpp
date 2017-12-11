@@ -98,6 +98,11 @@ int State::getNumMoves() const {
   return numMoves;
 }
 
+
+int State::getBoardSize() const {
+  return WIDTH * HEIGHT;
+}
+
 void State::incrementNumMoves() {
   if (numMoves >= WIDTH * HEIGHT) {
     throw std::runtime_error("Tried to over increment numMoves");
