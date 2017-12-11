@@ -41,7 +41,15 @@ State::TileBoard State::getBlackBoard() const {
   return blackBoard;
 }
 
-State State::play(TileType color, int col) const {
+State::TileType State::getNextTileColor() const {
+  return (numMoves % 2 == 0) ? State::TileType::Red : State::TileType::Black;
+}
+
+State State::play(int col) const {
+  return this->play(this->getNextTileColor(), col);
+}
+
+State State::play(State::TileType color, int col) const {
   State stateAfterPlay = State(this);
   for (int row = HEIGHT - 1; row >= 0; row--) {
     if (isEmpty(row, col)) {
@@ -58,7 +66,7 @@ bool State::isPlayable(int col) const {
   return false;
 }
 
-bool State::isWinningPlay(TileType color, int col) const {
+bool State::isWinningPlay(State::TileType color, int col) const {
   State s = play(color, col);
   TileBoard tb = (color == Red) ? s.getRedBoard() : s.getBlackBoard();
   TileBoard temp;
@@ -102,7 +110,7 @@ bool State::isBoardFull() const {
   return false;
 }
 
-void State::placeTile(TileType color, int row, int col) {
+void State::placeTile(State::TileType color, int row, int col) {
   if (color == Empty) {
     throw std::runtime_error("Tried to place an empty tile");
   }

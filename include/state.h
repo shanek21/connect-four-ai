@@ -36,6 +36,8 @@ class State {
 
   TileBoard getBlackBoard() const;
 
+  State play(int col) const;
+
   /**
    * @param tile - tile type to play
    * @param col - the column to play the tile in
