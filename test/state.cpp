@@ -24,9 +24,11 @@ TEST_CASE("isBoardFull()") {
 }
 
 TEST_CASE("isWinningPlay()") {
-  State s1;
-  s1 = s1.play(State::TileType::Red, 0);
-  s1 = s1.play(State::TileType::Red, 1);
-  s1 = s1.play(State::TileType::Red, 2);
-  REQUIRE(s1.isWinningPlay(State::TileType::Red, 3) == true);
+  State S;
+  SECTION("Horizontal") {
+    S = S.play(State::TileType::Red, 0);
+    S = S.play(State::TileType::Red, 1);
+    S = S.play(State::TileType::Red, 2);
+    REQUIRE(S.isWinningPlay(State::TileType::Red, 3) == true);
+  }
 }
