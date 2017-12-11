@@ -124,19 +124,6 @@ void State::placeTile(State::TileType color, int row, int col) {
     blackBoard[(row * (WIDTH + 1)) + col] = 1;
 }
 
-/* State State::boardFromArray(char A[][]) { */
-/*   State S(); */
-/*   int rows = sizeof(A) / sizeof(A[0]); */
-/*   int cols = sizeof(A[0]); */
-/*   for (int r = 0; r < rows; r++) { */
-/*     for (int c = 0; c < cols; c++) { */
-/*       if (A[r][c] == 'r') S.placeTile(TileType::Red, r, c); */
-/*       if (A[r][c] == 'b') S.placeTile(TileType::Black, r, c); */
-/*     } */
-/*   } */
-/*   return S; */
-/* } */
-
 std::ostream& operator<<(std::ostream& os, const State::TileType& t) {
   if (t == State::Red) return os << "R";
   if (t == State::Black) return os << "B";
