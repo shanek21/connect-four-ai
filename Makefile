@@ -16,7 +16,7 @@ OBJS = $(OBJ_DIR)/main.o \
       $(OBJ_DIR)/state.o
 
 
-.PHONY: all directories test
+.PHONY: all directories test clean
 
 all: directories connect_four
 
