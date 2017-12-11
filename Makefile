@@ -14,7 +14,8 @@ C_FLAGS = -g -std=c++11 -Wall
 
 OBJS = $(OBJ_DIR)/main.o \
       $(OBJ_DIR)/state.o \
-      $(OBJ_DIR)/renderer.o
+      $(OBJ_DIR)/renderer.o \
+      $(OBJ_DIR)/negamax.o
 
 
 .PHONY: all directories test clean
@@ -39,16 +40,20 @@ $(OBJ_DIR)/state.o: $(SRC_DIR)/state.cpp
 $(OBJ_DIR)/renderer.o: $(SRC_DIR)/renderer.cpp
 	$(CC) $(C_FLAGS) $(SRC_DIR)/renderer.cpp -c -o $(OBJ_DIR)/renderer.o
 
+$(OBJ_DIR)/negamax.o: $(SRC_DIR)/negamax.cpp
+	$(CC) $(C_FLAGS) $(SRC_DIR)/negamax.cpp -c -o $(OBJ_DIR)/negamax.o
+
 $(OBJ_DIR)/test_main.o: $(TEST_DIR)/test_main.cpp
 	$(CC) $(C_FLAGS) $(TEST_DIR)/test_main.cpp -c -o $(OBJ_DIR)/test_main.o
 
-$(TEST_DIR)/state: $(OBJ_DIR)/test_main.o $(TEST_DIR)/state.cpp $(OBJ_DIR)/state.o $(INC_DIR)/state.h
+$(TEST_DIR)/state: $(OBJ_DIR)/test_main.o $(TEST_DIR)/state.cpp $(OBJ_DIR)/state.o
 	$(CC) $(C_FLAGS) $(OBJ_DIR)/test_main.o $(TEST_DIR)/state.cpp $(OBJ_DIR)/state.o -o $(TEST_DIR)/state
 
-$(TEST_DIR)/negamax: $(OBJ_DIR)/test_main.o $(TEST_DIR)/negamax.cpp $(SRC_DIR)/negamax.cpp $(INC_DIR)/negamax.h
-	$(CC) $(C_FLAGS) $(OBJ_DIR)/test_main.o $(TEST_DIR)/negamax.cpp $(SRC_DIR)/negamax.cpp -o $(TEST_DIR)/negamax
+$(TEST_DIR)/negamax: $(OBJ_DIR)/test_main.o $(TEST_DIR)/negamax.cpp $(OBJ_DIR)/negamax.o $(OBJ_DIR)/state.o 
+	$(CC) $(C_FLAGS) $(OBJ_DIR)/test_main.o $(TEST_DIR)/negamax.cpp $(OBJ_DIR)/negamax.o $(OBJ_DIR)/state.o -o $(TEST_DIR)/negamax
 
-test: directories $(TEST_DIR)/state $(TEST_DIR)/negamax
+test: directories $(TEST_DIR)/state\
+	$(TEST_DIR)/negamax
 	./$(TEST_DIR)/state
 	./$(TEST_DIR)/negamax
 
