@@ -1,5 +1,11 @@
+#include <limits>
 #include "../include/negamax.h"
 #include "../include/state.h"
+
+int negamax(const State S) {
+  return negamax(S, std::numeric_limits<int>::min(),
+      std::numeric_limits<int>::max());
+}
 
 /**
  * @param S - the current state to evaluate
@@ -7,7 +13,7 @@
  *   If the game is a draw, 0. If the game is losing, return
  *   moves_until_loss - board_size - 1
  */
-int negamax(const State S) {
+int negamax(const State S, int lowerBoard, int upperBound) {
   if (S.isBoardFull())  // if the game is over, it's a draw
     return 0;
 
