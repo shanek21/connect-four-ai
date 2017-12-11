@@ -7,5 +7,6 @@ connect_four
 # Don't commit compiled object files
 *.o
 
-# The executable for the state test file
+# The executables for our tests
 test/state
+test/negamax
