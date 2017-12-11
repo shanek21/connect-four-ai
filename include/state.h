@@ -37,6 +37,8 @@ class State {
 
   TileBoard getBlackBoard() const;
 
+  int getBoardSize() const;
+
   State play(int col) const;
 
   /**

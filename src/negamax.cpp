@@ -3,8 +3,9 @@
 
 /**
  * @param S - the current state to evaluate
- * @returns 1 if the next player to play can win, 0 if the game is a draw, -1
- *   if the next player to play will lose
+ * @returns if the game is winning, board_size - moves_until_win + 1.
+ *   If the game is a draw, 0. If the game is losing, return
+ *   moves_until_loss - board_size - 1
  */
 int negamax(const State S) {
   if (S.isBoardFull())  // if the game is over, it's a draw
@@ -15,19 +16,18 @@ int negamax(const State S) {
   for (int x = 0; x < width; x++) {
     if (S.isPlayable(x) && S.isWinningPlay(S.getNextTileColor(), x)) {
       // If there is a winning move, return 1
-      return 1;
+      return S.getBoardSize() - S.getNumMoves();
     }
   }
 
   // Assume current player will lose
-  int bestScore = -1;
+  int bestScore = S.getNumMoves() - S.getBoardSize();
 
   for (int x = 0; x < width; x++) {
     if (!S.isPlayable(x)) continue;
     State nextState = S.play(x);
     // Negative scores for our opponent are positive for us
     bestScore = std::max(bestScore, -negamax(nextState));
-    if (bestScore == 1) return 1;  // if we've found a winning move, return
   }
   return bestScore;
 }
