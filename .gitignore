@@ -9,3 +9,6 @@ test_exec
 
 # Don't commit compiled object files
 *.o
+
+# The executable for the state test file
+test/state
