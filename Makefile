@@ -29,19 +29,19 @@ directories:
 connect_four: $(OBJS)
 	$(CC) $(C_FLAGS) $(OBJS) -o connect_four
 
-$(OBJ_DIR)/main.o: $(SRC_DIR)/main.cpp
+$(OBJ_DIR)/main.o: $(SRC_DIR)/main.cpp directories
 	$(CC) $(C_FLAGS) $(SRC_DIR)/main.cpp -c -o $(OBJ_DIR)/main.o
 
-$(OBJ_DIR)/state.o: $(SRC_DIR)/state.cpp
+$(OBJ_DIR)/state.o: $(SRC_DIR)/state.cpp directories
 	$(CC) $(C_FLAGS) $(SRC_DIR)/state.cpp -c -o $(OBJ_DIR)/state.o
 
-$(OBJ_DIR)/test_main.o: $(TEST_DIR)/test_main.cpp
+$(OBJ_DIR)/test_main.o: $(TEST_DIR)/test_main.cpp directories
 	$(CC) $(C_FLAGS) $(TEST_DIR)/test_main.cpp -c -o $(OBJ_DIR)/test_main.o
 
 $(TEST_DIR)/state: $(OBJ_DIR)/test_main.o $(TEST_DIR)/state.cpp $(OBJ_DIR)/state.o $(INC_DIR)/state.h
 	$(CC) $(C_FLAGS) $(OBJ_DIR)/test_main.o $(TEST_DIR)/state.cpp $(OBJ_DIR)/state.o -o $(TEST_DIR)/state
 
-test: directories $(TEST_DIR)/state
+test: $(TEST_DIR)/state
 	./$(TEST_DIR)/state
 
 # Remove the executable

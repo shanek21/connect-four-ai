@@ -111,20 +111,17 @@ bool State::isBoardFull() const {
 }
 
 void State::placeTile(State::TileType color, int row, int col) {
-  if (color == Empty) {
+  if (color == Empty)
     throw std::runtime_error("Tried to place an empty tile");
-  }
-  if (!isEmpty(row, col)) {
-    throw std::runtime_error("Tried to overwrite an existing tile");
-  }
 
-  if (color == Red) {
+  if (!isEmpty(row, col))
+    throw std::runtime_error("Tried to overwrite an existing tile");
+
+
+  if (color == Red)
     redBoard[(row * (WIDTH + 1)) + col] = 1;
-  } else if (color == Black) {
+  else
     blackBoard[(row * (WIDTH + 1)) + col] = 1;
-  } else {
-    // TODO(davidabrahams): Why is this case here?
-  }
 }
 
 std::ostream& operator<<(std::ostream& os, const State::TileType& t) {
