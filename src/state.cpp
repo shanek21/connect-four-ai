@@ -42,11 +42,11 @@ State::TileBoard State::getBlackBoard() const {
 }
 
 State::TileType State::getNextTileColor() const {
-  return (numMoves % 2 == 0) ? State::TileType::Red : State::TileType::Black;
+  return (numMoves % 2 == 0) ? Red : Black;
 }
 
 State State::play(int col) const {
-  return this->play(this->getNextTileColor(), col);
+  return play(getNextTileColor(), col);
 }
 
 State State::play(State::TileType color, int col) const {
@@ -78,17 +78,20 @@ bool State::isWinningPlay(State::TileType color, int col) const {
 
   // Check |
   temp = tb & (tb >> WIDTH);
-  temp = temp & (tb >> 2 * WIDTH);
+  temp = temp & (temp >> 2 * WIDTH);
   if (temp.any()) return true;
 
   // Check /
+  /* std::cout << tb << std::endl; */
   temp = tb >> (WIDTH - 1);
+  /* std::cout << temp << std::endl; */
   temp = temp & (temp >> 2 * (WIDTH - 1));
+  /* std::cout << temp << std::endl; */
   if (temp.any()) return true;
 
   // Check top-left to bot-right diagonal
   temp = tb >> (WIDTH + 1);
-  temp = temp & (tb >> 2 * (WIDTH + 1));
+  temp = temp & (temp >> 2 * (WIDTH + 1));
   if (temp.any()) return true;
 
   return false;
