@@ -15,11 +15,11 @@ State::State(const State* s) {
 }
 
 bool State::isRedTile(int row, int col) const {
-  return redBoard[(row * WIDTH) + col];
+  return redBoard[(row * (WIDTH + 1)) + col];
 }
 
 bool State::isBlackTile(int row, int col) const {
-  return blackBoard[(row * WIDTH) + col];
+  return blackBoard[(row * (WIDTH + 1)) + col];
 }
 
 State::TileType State::getTile(int row, int col) const {
@@ -77,21 +77,18 @@ bool State::isWinningPlay(State::TileType color, int col) const {
   if (temp.any()) return true;
 
   // Check |
+  temp = tb & (tb >> (WIDTH + 1));
+  temp = temp & (temp >> 2 * (WIDTH + 1));
+  if (temp.any()) return true;
+
+  // Check /
   temp = tb & (tb >> WIDTH);
   temp = temp & (temp >> 2 * WIDTH);
   if (temp.any()) return true;
 
-  // Check /
-  /* std::cout << tb << std::endl; */
-  temp = tb >> (WIDTH - 1);
-  /* std::cout << temp << std::endl; */
-  temp = temp & (temp >> 2 * (WIDTH - 1));
-  /* std::cout << temp << std::endl; */
-  if (temp.any()) return true;
-
   // Check top-left to bot-right diagonal
-  temp = tb >> (WIDTH + 1);
-  temp = temp & (temp >> 2 * (WIDTH + 1));
+  temp = tb & (tb >> (WIDTH + 2));
+  temp = temp & (temp >> 2 * (WIDTH + 2));
   if (temp.any()) return true;
 
   return false;
@@ -122,10 +119,11 @@ void State::placeTile(State::TileType color, int row, int col) {
   }
 
   if (color == Red) {
-    redBoard[(row * WIDTH) + col] = 1;
+    redBoard[(row * (WIDTH + 1)) + col] = 1;
   } else if (color == Black) {
-    blackBoard[(row * WIDTH) + col] = 1;
+    blackBoard[(row * (WIDTH + 1)) + col] = 1;
   } else {
+    // TODO(davidabrahams): Why is this case here?
   }
 }
 
