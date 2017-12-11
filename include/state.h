@@ -10,7 +10,7 @@ class State {
   static const int WIDTH = 7;
   static const int HEIGHT = 6;
 
-  typedef std::bitset<WIDTH * HEIGHT> TileBoard;
+  typedef std::bitset<(WIDTH + 1) * HEIGHT> TileBoard;
   enum TileType { Red, Black, Empty };
 
   /**
