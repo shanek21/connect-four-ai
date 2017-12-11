@@ -82,6 +82,15 @@ TEST_CASE("isWinningPlay()") {
     REQUIRE(S.isWinningPlay(State::TileType::Red, 3) == true);
   }
 
+  SECTION("Horizontal wrap around case") {
+    S = S.play(State::TileType::Black, 5);
+    S = S.play(State::TileType::Black, 6);
+    S = S.play(State::TileType::Red, 5);
+    S = S.play(State::TileType::Red, 6);
+    S = S.play(State::TileType::Red, 0);
+    REQUIRE(S.isWinningPlay(State::TileType::Red, 1) == false);
+  }
+
   SECTION("Vertical") {
     S = S.play(0);
     S = S.play(1);
@@ -95,18 +104,49 @@ TEST_CASE("isWinningPlay()") {
     REQUIRE(!S.isWinningPlay(State::TileType::Red, 3));
   }
 
-  SECTION("Diagonal") {
+  SECTION("Vertical wrap around case") {
+    State S;
+    S = S.play(State::TileType::Red, 0);
+    S = S.play(State::TileType::Red, 0);
+    S = S.play(State::TileType::Black, 0);
+    S = S.play(State::TileType::Black, 0);
+    S = S.play(State::TileType::Red, 0);
+    S = S.play(State::TileType::Red, 0);
+    S = S.play(State::TileType::Red, 1);
+    REQUIRE(!S.isWinningPlay(State::TileType::Red, 1));
+  }
+
+  SECTION("Diagonal rising") {
     S = S.play(1);
-    /* REQUIRE(!S.isWinningPlay(State::TileType::Black, 6)); */
+    REQUIRE(!S.isWinningPlay(State::TileType::Black, 6));
     S = S.play(0);
     S = S.play(2);
     S = S.play(1);
     S = S.play(2);
     S = S.play(2);
     S = S.play(3);
-    /* REQUIRE(!S.isWinningPlay(State::TileType::Black, 3)); */
+    REQUIRE(!S.isWinningPlay(State::TileType::Black, 3));
     S = S.play(3);
     S = S.play(3);
     REQUIRE(S.isWinningPlay(State::TileType::Black, 3));
+  }
+
+  SECTION("Diagonal falling") {
+    S = S.play(State::TileType::Black, 0);
+    S = S.play(State::TileType::Black, 0);
+    S = S.play(State::TileType::Black, 0);
+    S = S.play(State::TileType::Red, 0);
+
+    S = S.play(State::TileType::Black, 1);
+    S = S.play(State::TileType::Black, 1);
+    S = S.play(State::TileType::Red, 1);
+
+    S = S.play(State::TileType::Red, 3);
+
+    S = S.play(State::TileType::Black, 2);
+    REQUIRE(!S.isWinningPlay(State::TileType::Red, 0));
+    REQUIRE(!S.isWinningPlay(State::TileType::Red, 1));
+    REQUIRE(!S.isWinningPlay(State::TileType::Red, 3));
+    REQUIRE(S.isWinningPlay(State::TileType::Red, 2));
   }
 }
