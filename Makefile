@@ -13,7 +13,8 @@ LIB_DIR = lib
 C_FLAGS = -g -std=c++11 -Wall
 
 OBJS = $(OBJ_DIR)/main.o \
-      $(OBJ_DIR)/state.o
+      $(OBJ_DIR)/state.o \
+			$(OBJ_DIR)/renderer.o
 
 
 .PHONY: all directories test clean
@@ -27,13 +28,16 @@ directories:
 #   flags
 # Depends on the main.CC file
 connect_four: $(OBJS)
-	$(CC) $(C_FLAGS) $(OBJS) -o connect_four
+	$(CC) $(C_FLAGS) $(OBJS) -o connect_four -lncurses
 
 $(OBJ_DIR)/main.o: $(SRC_DIR)/main.cpp
 	$(CC) $(C_FLAGS) $(SRC_DIR)/main.cpp -c -o $(OBJ_DIR)/main.o
 
 $(OBJ_DIR)/state.o: $(SRC_DIR)/state.cpp
 	$(CC) $(C_FLAGS) $(SRC_DIR)/state.cpp -c -o $(OBJ_DIR)/state.o
+
+$(OBJ_DIR)/renderer.o: $(SRC_DIR)/renderer.cpp
+	$(CC) $(C_FLAGS) $(SRC_DIR)/renderer.cpp -c -o $(OBJ_DIR)/renderer.o
 
 $(OBJ_DIR)/test_main.o: $(TEST_DIR)/test_main.cpp
 	$(CC) $(C_FLAGS) $(TEST_DIR)/test_main.cpp -c -o $(OBJ_DIR)/test_main.o
