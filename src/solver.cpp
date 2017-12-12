@@ -30,9 +30,10 @@ int Solver::negamax(State s) const {
  *   in the game
  * @param upperBound - the highest possible score the current player can achieve
  *   in the game
- * @returns if the game is winning, board_size - moves_until_win + 1.
+ * @returns if the game is winning, (board_size - moves_to_win + 2) / 2.
  *   If the game is a draw, 0. If the game is losing, return
- *   moves_until_loss - board_size - 1
+ *   (moves_to_lose - board_size - 2) / 2. Best possible score is 21, worst
+ *   is -21.
  */
 int Solver::negamax(State s, int lowerBound, int upperBound) const {
   if (s.isBoardFull()) return 0;  // if the game is over, it's a draw
