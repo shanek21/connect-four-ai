@@ -15,6 +15,7 @@ C_FLAGS = -g -std=c++11 -Wall
 OBJS = $(OBJ_DIR)/main.o \
       $(OBJ_DIR)/state.o \
       $(OBJ_DIR)/renderer.o \
+      $(OBJ_DIR)/table.o \
       $(OBJ_DIR)/solver.o
 
 
@@ -37,10 +38,13 @@ $(OBJ_DIR)/main.o: $(SRC_DIR)/main.cpp
 $(OBJ_DIR)/state.o: $(SRC_DIR)/state.cpp
 	$(CC) $(C_FLAGS) $(SRC_DIR)/state.cpp -c -o $(OBJ_DIR)/state.o
 
+$(OBJ_DIR)/table.o: $(SRC_DIR)/table.cpp
+	$(CC) $(C_FLAGS) $(SRC_DIR)/table.cpp -c -o $(OBJ_DIR)/table.o
+
 $(OBJ_DIR)/renderer.o: $(SRC_DIR)/renderer.cpp
 	$(CC) $(C_FLAGS) $(SRC_DIR)/renderer.cpp -c -o $(OBJ_DIR)/renderer.o
 
-$(OBJ_DIR)/solver.o: $(SRC_DIR)/solver.cpp
+$(OBJ_DIR)/solver.o: $(SRC_DIR)/solver.cpp $(OBJ_DIR)/table.o
 	$(CC) $(C_FLAGS) $(SRC_DIR)/solver.cpp -c -o $(OBJ_DIR)/solver.o
 
 $(OBJ_DIR)/test_main.o: $(TEST_DIR)/test_main.cpp
@@ -49,8 +53,8 @@ $(OBJ_DIR)/test_main.o: $(TEST_DIR)/test_main.cpp
 $(TEST_DIR)/state: $(OBJ_DIR)/test_main.o $(TEST_DIR)/state.cpp $(OBJ_DIR)/state.o
 	$(CC) $(C_FLAGS) $(OBJ_DIR)/test_main.o $(TEST_DIR)/state.cpp $(OBJ_DIR)/state.o -o $(TEST_DIR)/state
 
-$(TEST_DIR)/solver: $(OBJ_DIR)/test_main.o $(TEST_DIR)/solver.cpp $(OBJ_DIR)/solver.o $(OBJ_DIR)/state.o 
-	$(CC) $(C_FLAGS) $(OBJ_DIR)/test_main.o $(TEST_DIR)/solver.cpp $(OBJ_DIR)/solver.o $(OBJ_DIR)/state.o -o $(TEST_DIR)/solver
+$(TEST_DIR)/solver: $(OBJ_DIR)/test_main.o $(TEST_DIR)/solver.cpp $(OBJ_DIR)/solver.o $(OBJ_DIR)/state.o $(OBJ_DIR)/table.o 
+	$(CC) $(C_FLAGS) $(OBJ_DIR)/test_main.o $(TEST_DIR)/solver.cpp $(OBJ_DIR)/solver.o $(OBJ_DIR)/state.o $(OBJ_DIR)/table.o -o $(TEST_DIR)/solver
 
 test: directories $(TEST_DIR)/state $(TEST_DIR)/solver
 	./$(TEST_DIR)/state

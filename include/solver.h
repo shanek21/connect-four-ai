@@ -3,6 +3,7 @@
 
 #include <list>
 #include "../include/state.h"
+#include "../include/table.h"
 
 class Solver {
  public:
@@ -10,6 +11,7 @@ class Solver {
   int negamax(State S) const;
   int negamax(State S, int lowerBound, int upperBound) const;
  private:
+  Table table;
   std::list<int> moveOrder;
   void initMoveOrder(int w);
 };
