@@ -3,8 +3,9 @@
 #include <iostream>
 #include "../include/solver.h"
 #include "../include/state.h"
+#include "../include/table.h"
 
-Solver::Solver() {
+Solver::Solver() : table(67108744) {  // use ~64 MB of data
   initMoveOrder(State::WIDTH);
 }
 
