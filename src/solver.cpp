@@ -5,7 +5,10 @@
 #include "../include/state.h"
 
 Solver::Solver() {
-  int w = State::WIDTH;
+  initMoveOrder(State::WIDTH);
+}
+
+void Solver::initMoveOrder(int w) {
   int i = (w - 1) / 2;
   int j = w / 2;
   moveOrder.push_back(i);
@@ -16,7 +19,7 @@ Solver::Solver() {
   }
 }
 
-int Solver::negamax(State S) {
+int Solver::negamax(State S) const {
   return negamax(S, -S.getBoardSize(), S.getBoardSize());
 }
 
@@ -26,7 +29,7 @@ int Solver::negamax(State S) {
  *   If the game is a draw, 0. If the game is losing, return
  *   moves_until_loss - board_size - 1
  */
-int Solver::negamax(State s, int lowerBound, int upperBound) {
+int Solver::negamax(State s, int lowerBound, int upperBound) const {
   if (s.isBoardFull()) {  // if the game is over, it's a draw
     return 0;
   }

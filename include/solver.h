@@ -7,10 +7,11 @@
 class Solver {
  public:
   Solver();
-  int negamax(State S);
-  int negamax(State S, int lowerBound, int upperBound);
- protected:
+  int negamax(State S) const;
+  int negamax(State S, int lowerBound, int upperBound) const;
+ private:
   std::list<int> moveOrder;
+  void initMoveOrder(int w);
 };
 
 

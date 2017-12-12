@@ -9,4 +9,4 @@ connect_four
 
 # The executables for our tests
 test/state
-test/negamax
+test/solver
