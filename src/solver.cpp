@@ -2,8 +2,6 @@
 #include <stdexcept>
 #include <iostream>
 #include "../include/solver.h"
-#include "../include/state.h"
-#include "../include/table.h"
 
 Solver::Solver() : table(67108744) {  // use ~64 MB of data
   initMoveOrder(State::WIDTH);
@@ -44,13 +42,18 @@ int8_t Solver::negamax(State s, int8_t lowerBound, int8_t upperBound) {
     if (s.isPlayable(x) && s.isWinningPlay(s.getNextTileColor(), x)) {
       // If there is a winning move
       score = (s.getBoardSize() - s.getNumMoves() + 1) / 2;
-      table.put(s.getNextToMoveBoard(), score);
       return score;
     }
   }
 
   // Best case scenario, we win after our opponents next move
-  int bestPossibleScore = std::max(s.getBoardSize() - s.getNumMoves() - 1, 0);
+  int8_t bestPossibleScore = (s.getBoardSize() - s.getNumMoves() - 1) / 2;
+  int8_t tableVal = table.get(s.boardKey());
+
+  // If there's already an upper bound stored in the table, it is the best
+  //   possible score
+  if (tableVal != EMPTY_VAL) bestPossibleScore = tableVal;
+
   // Can't do better than bestPossibleScore
   upperBound = std::min(upperBound, bestPossibleScore);
   if (lowerBound >= upperBound) {
@@ -80,5 +83,6 @@ int8_t Solver::negamax(State s, int8_t lowerBound, int8_t upperBound) {
     lowerBound = std::max(lowerBound, bestSoFar);
   }
   score = bestSoFar;
+  table.put(s.boardKey(), score);
   return score;
 }
