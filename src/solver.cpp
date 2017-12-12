@@ -89,5 +89,19 @@ int8_t Solver::negamax(State s, int8_t lowerBound, int8_t upperBound) {
 }
 
 int Solver::score(State s) {
-  return negamax(s, -s.getBoardSize() / 2, s.getBoardSize() / 2);
+  /* return negamax(s, -s.getBoardSize() / 2, s.getBoardSize() / 2); */
+  int min = -s.getBoardSize() / 2;
+  int max = s.getBoardSize() / 2;
+  // run a binary search
+  while (min < max) {
+    int med = min + (max - min) / 2;
+    // TODO(davidabrahams): why cant we do the following:
+    // int med (max + min) / 2
+    int negamaxScore = negamax(s, med, med + 1);
+    if (negamaxScore <= med)
+      max = negamaxScore;
+    else
+      min = negamaxScore;
+  }
+  return min;
 }
