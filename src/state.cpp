@@ -15,11 +15,11 @@ State::State(const State* s) {
 }
 
 bool State::isRedTile(int row, int col) const {
-  return redBoard[(row * (WIDTH + 1)) + col];
+  return getRedBoard().get(row, col);
 }
 
 bool State::isBlackTile(int row, int col) const {
-  return blackBoard[(row * (WIDTH + 1)) + col];
+  return getBlackBoard().get(row, col);
 }
 
 State::TileType State::getTile(int row, int col) const {
@@ -33,11 +33,11 @@ bool State::isEmpty(int row, int col) const {
   return false;
 }
 
-State::TileBoard State::getRedBoard() const {
+BitBoard State::getRedBoard() const {
   return redBoard;
 }
 
-State::TileBoard State::getBlackBoard() const {
+BitBoard State::getBlackBoard() const {
   return blackBoard;
 }
 
@@ -67,29 +67,31 @@ bool State::isPlayable(int col) const {
 }
 
 bool State::isWinningPlay(State::TileType color, int col) const {
+  /*
   State s = play(color, col);
-  TileBoard tb = (color == Red) ? s.getRedBoard() : s.getBlackBoard();
-  TileBoard temp;
+  BitBoard bb = (color == Red) ? s.getRedBoard() : s.getBlackBoard();
+  BitBoard temp;
 
   // Check -
-  temp = tb & (tb >> 1);
+  temp = bb & (bb >> 1);
   temp = temp & (temp >> 2);
   if (temp.any()) return true;
 
   // Check |
-  temp = tb & (tb >> (WIDTH + 1));
+  temp = bb & (bb >> (WIDTH + 1));
   temp = temp & (temp >> 2 * (WIDTH + 1));
   if (temp.any()) return true;
 
   // Check /
-  temp = tb & (tb >> WIDTH);
+  temp = bb & (bb >> WIDTH);
   temp = temp & (temp >> 2 * WIDTH);
   if (temp.any()) return true;
 
   // Check top-left to bot-right diagonal
-  temp = tb & (tb >> (WIDTH + 2));
+  temp = bb & (bb >> (WIDTH + 2));
   temp = temp & (temp >> 2 * (WIDTH + 2));
   if (temp.any()) return true;
+  */
 
   return false;
 }
@@ -115,18 +117,18 @@ bool State::isBoardFull() const {
   return false;
 }
 
-void State::placeTile(State::TileType color, int row, int col) {
+void State::placeTile(TileType color, int row, int col) {
   if (color == Empty)
     throw std::runtime_error("Tried to place an empty tile");
 
   if (!isEmpty(row, col))
     throw std::runtime_error("Tried to overwrite an existing tile");
 
-
-  if (color == Red)
-    redBoard[(row * (WIDTH + 1)) + col] = 1;
-  else
-    blackBoard[(row * (WIDTH + 1)) + col] = 1;
+  if (color == Red) {
+    getRedBoard().set(row, col);
+  } else {
+    getBlackBoard().set(row, col);
+  }
 }
 
 std::ostream& operator<<(std::ostream& os, const State::TileType& t) {
