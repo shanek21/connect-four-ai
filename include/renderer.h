@@ -10,7 +10,7 @@
 #define X_OFFSET 2
 
 void displayGrid(State s);
-void setUpScreen();
+void setupScreen();
 void shutDownScreen();
 
 

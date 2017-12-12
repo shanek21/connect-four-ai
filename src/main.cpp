@@ -4,6 +4,6 @@
 #include "../include/renderer.h"
 
 int main() {
-  setUpScreen();
+  setupScreen();
   shutDownScreen();
 }
