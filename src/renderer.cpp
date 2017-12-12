@@ -1,6 +1,7 @@
 #include "../include/renderer.h"
 
 
+// TODO(davidabrahams): calculate this dynamically based on board width
 int tileOffsets[7] = {2, 6, 10, 14, 18, 22, 26};
 
 void displayGrid(State s) {
@@ -28,13 +29,13 @@ void displayGrid(State s) {
   refresh();
 }
 
-void setUpScreen() {
+void setupScreen() {
   initscr();                                // Start curses mode
   start_color();
   noecho();
   init_pair(1, COLOR_RED, COLOR_WHITE);     // Creates red tiles
   init_pair(2, COLOR_BLACK, COLOR_WHITE);   // Creates yellow tiles
-  init_pair(3, 244, COLOR_WHITE);
+  init_pair(3, 244, COLOR_WHITE);  // TODO(davidabrahams): which color is this?
   bkgd(COLOR_PAIR(3));
   mvaddstr(Y_OFFSET, X_OFFSET, "=============================");
   for (int y = Y_OFFSET + 1; y <= Y_OFFSET + State::HEIGHT + 1; y++) {

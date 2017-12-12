@@ -14,7 +14,7 @@ C_FLAGS = -g -std=c++11 -Wall
 
 OBJS = $(OBJ_DIR)/main.o \
       $(OBJ_DIR)/state.o \
-			$(OBJ_DIR)/renderer.o
+      $(OBJ_DIR)/renderer.o
 
 
 .PHONY: all directories test clean
