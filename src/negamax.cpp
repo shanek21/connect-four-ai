@@ -4,7 +4,19 @@
 #include "../include/negamax.h"
 #include "../include/state.h"
 
-int negamax(const State S) {
+Solver::Solver() {
+  int w = State::WIDTH;
+  int i = (w - 1) / 2;
+  int j = w / 2;
+  moveOrder.push_back(i);
+  if (i != j) moveOrder.push_back(j);
+  while (i > 0) {
+    moveOrder.push_back(--i);
+    moveOrder.push_back(++j);
+  }
+}
+
+int Solver::negamax(State S) {
   return negamax(S, -S.getBoardSize(), S.getBoardSize());
 }
 
@@ -14,36 +26,36 @@ int negamax(const State S) {
  *   If the game is a draw, 0. If the game is losing, return
  *   moves_until_loss - board_size - 1
  */
-int negamax(const State s, int lowerBoard, int upperBound) {
+int Solver::negamax(State s, int lowerBound, int upperBound) {
   if (s.isBoardFull()) {  // if the game is over, it's a draw
     return 0;
   }
 
-  int width = State::WIDTH;
-
-  for (int col = 0; col < width; col++) {
-    if (s.isPlayable(col) && s.isWinningPlay(s.getNextTileColor(), col)) {
+  for (auto it = moveOrder.begin(); it != moveOrder.end(); it++) {
+    int x = *it;
+    if (s.isPlayable(x) && s.isWinningPlay(s.getNextTileColor(), x)) {
       // If there is a winning move
-      return S.getBoardSize() - S.getNumMoves();
+      return s.getBoardSize() - s.getNumMoves();
     }
   }
 
   // Best case scenario, we win after our opponents next move
-  int bestPossibleScore = std::max(S.getBoardSize() - S.getNumMoves() - 2, 0);
+  int bestPossibleScore = std::max(s.getBoardSize() - s.getNumMoves() - 2, 0);
   // Can't do better than bestPossibleScore
   upperBound = std::min(upperBound, bestPossibleScore);
-  // If elsewhere we've found a higher lower bound, then assume this position
-  // has the best possible score, since it will be discarded anyway
   if (lowerBound >= upperBound) {
+    // If elsewhere we've found a higher lower bound, then assume this position
+    // has the best possible score, since it will be discarded anyway
     return upperBound;
   }
 
   // Assume current player will lose
-  int bestScore = S.getNumMoves() - S.getBoardSize();
+  int bestScore = s.getNumMoves() - s.getBoardSize();
 
-  for (int col = 0; col < width; col++) {
-    if (!s.isPlayable(col)) continue;
-    State nextState = s.play(col);
+  for (auto it = moveOrder.begin(); it != moveOrder.end(); it++) {
+    int x = *it;
+    if (!s.isPlayable(x)) continue;
+    State nextState = s.play(x);
     // Negative scores for our opponent are positive for us
     bestScore = std::max(bestScore,
         -negamax(nextState, -upperBound, -lowerBound));
