@@ -20,10 +20,6 @@ void Solver::initMoveOrder(int w) {
   /* } */
 }
 
-int Solver::negamax(State s) {
-  return negamax(s, -s.getBoardSize(), s.getBoardSize());
-}
-
 /**
  * @param s - the current state to evaluate
  * @param lowerBound - the lowest possible score the current player can achieve
@@ -90,4 +86,8 @@ int8_t Solver::negamax(State s, int8_t lowerBound, int8_t upperBound) {
   score = bestSoFar;
   table.put(s.boardKey(), score);
   return score;
+}
+
+int Solver::score(State s) {
+  return negamax(s, -s.getBoardSize() / 2, s.getBoardSize() / 2);
 }

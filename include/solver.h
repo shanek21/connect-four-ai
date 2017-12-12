@@ -9,12 +9,12 @@
 class Solver {
  public:
   Solver();
-  int negamax(State S);
-  int8_t negamax(State S, int8_t lowerBound, int8_t upperBound);
+  int score(State S);
  private:
   Table table;
   std::list<int> moveOrder;
   void initMoveOrder(int w);
+  int8_t negamax(State S, int8_t lowerBound, int8_t upperBound);
 };
 
 
