@@ -17,9 +17,8 @@ TEST_CASE("negamax()") {
     REQUIRE(solver.negamax(S) > 0);
     S = State::boardFromNums("326615663752621323655335514271");
     REQUIRE(solver.negamax(S) > 0);
-    // This case is too slow, takes about 5.5 seconds
-    /* S = State::boardFromNums("24617524315172127"); */
-    /* REQUIRE(solver.negamax(S) > 0); */
+    S = State::boardFromNums("24617524315172127");
+    REQUIRE(solver.negamax(S) > 0);
   }
   SECTION("Draw") {
     State S = State::boardFromNums("74425337641465475671176741236615215533");
