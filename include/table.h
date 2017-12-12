@@ -4,16 +4,19 @@
 #include <vector>
 #include <cstdint>
 
+#include "./state.h"
+
 class Table {
  public:
   explicit Table(uint32_t numBits);
+  void put(State::TileBoard board, uint8_t score);
  private:
-  /* struct Entry; */
+  uint32_t getTableIndex(uint64_t board) const;
   struct Entry {
-    uint64_t key: 56;
-    uint8_t stuff;
+    uint64_t board: 56;
+    int8_t score;
   };
-  std::vector<Entry> T;
+  std::vector<Entry> table;
 };
 
 #endif  // INCLUDE_TABLE_H_
