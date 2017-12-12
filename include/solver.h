@@ -9,8 +9,8 @@
 class Solver {
  public:
   Solver();
-  int negamax(State S) const;
-  int8_t negamax(State S, int8_t lowerBound, int8_t upperBound) const;
+  int negamax(State S);
+  int8_t negamax(State S, int8_t lowerBound, int8_t upperBound);
  private:
   Table table;
   std::list<int> moveOrder;

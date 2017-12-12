@@ -41,6 +41,10 @@ State::TileBoard State::getBlackBoard() const {
   return blackBoard;
 }
 
+State::TileBoard State::getNextToMoveBoard() const {
+  return getNextTileColor() == Red ? getRedBoard() : getBlackBoard();
+}
+
 State::TileType State::getNextTileColor() const {
   return (numMoves % 2 == 0) ? Red : Black;
 }
