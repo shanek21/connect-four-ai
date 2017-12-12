@@ -52,8 +52,7 @@ $(TEST_DIR)/state: $(OBJ_DIR)/test_main.o $(TEST_DIR)/state.cpp $(OBJ_DIR)/state
 $(TEST_DIR)/negamax: $(OBJ_DIR)/test_main.o $(TEST_DIR)/negamax.cpp $(OBJ_DIR)/negamax.o $(OBJ_DIR)/state.o 
 	$(CC) $(C_FLAGS) $(OBJ_DIR)/test_main.o $(TEST_DIR)/negamax.cpp $(OBJ_DIR)/negamax.o $(OBJ_DIR)/state.o -o $(TEST_DIR)/negamax
 
-test: directories $(TEST_DIR)/state\
-	$(TEST_DIR)/negamax
+test: directories $(TEST_DIR)/state $(TEST_DIR)/negamax
 	./$(TEST_DIR)/state
 	./$(TEST_DIR)/negamax
 
