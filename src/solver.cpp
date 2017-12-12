@@ -19,20 +19,22 @@ void Solver::initMoveOrder(int w) {
   }
 }
 
-int Solver::negamax(State S) const {
-  return negamax(S, -S.getBoardSize(), S.getBoardSize());
+int Solver::negamax(State s) const {
+  return negamax(s, -s.getBoardSize(), s.getBoardSize());
 }
 
 /**
- * @param S - the current state to evaluate
+ * @param s - the current state to evaluate
+ * @param lowerBound - the lowest possible score the current player can achieve
+ *   in the game
+ * @param upperBound - the highest possible score the current player can achieve
+ *   in the game
  * @returns if the game is winning, board_size - moves_until_win + 1.
  *   If the game is a draw, 0. If the game is losing, return
  *   moves_until_loss - board_size - 1
  */
 int Solver::negamax(State s, int lowerBound, int upperBound) const {
-  if (s.isBoardFull()) {  // if the game is over, it's a draw
-    return 0;
-  }
+  if (s.isBoardFull()) return 0;  // if the game is over, it's a draw
 
   for (auto it = moveOrder.begin(); it != moveOrder.end(); it++) {
     int x = *it;
