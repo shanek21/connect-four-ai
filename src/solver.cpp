@@ -21,7 +21,7 @@ void Solver::initMoveOrder(int w) {
   /* } */
 }
 
-int Solver::negamax(State s) const {
+int Solver::negamax(State s) {
   return negamax(s, -s.getBoardSize(), s.getBoardSize());
 }
 
@@ -36,13 +36,16 @@ int Solver::negamax(State s) const {
  *   (moves_to_lose - board_size - 2) / 2. Best possible score is 21, worst
  *   is -21.
  */
-int8_t Solver::negamax(State s, int8_t lowerBound, int8_t upperBound) const {
+int8_t Solver::negamax(State s, int8_t lowerBound, int8_t upperBound) {
+  int8_t score;
   if (s.isBoardFull()) return 0;  // if the game is over, it's a draw
   for (auto it = moveOrder.begin(); it != moveOrder.end(); it++) {
     int x = *it;
     if (s.isPlayable(x) && s.isWinningPlay(s.getNextTileColor(), x)) {
       // If there is a winning move
-      return (s.getBoardSize() - s.getNumMoves() + 1) / 2;
+      score = (s.getBoardSize() - s.getNumMoves() + 1) / 2;
+      table.put(s.getNextToMoveBoard(), score);
+      return score;
     }
   }
 
@@ -53,7 +56,8 @@ int8_t Solver::negamax(State s, int8_t lowerBound, int8_t upperBound) const {
   if (lowerBound >= upperBound) {
     // If elsewhere we've found a higher lower bound, then assume this position
     // has the best possible score, since it will be discarded anyway
-    return upperBound;
+    score = upperBound;
+    return score;
   }
 
   // Assume current player will lose
@@ -69,10 +73,12 @@ int8_t Solver::negamax(State s, int8_t lowerBound, int8_t upperBound) const {
     if (upperBound <= bestSoFar) {
       // If the upperBound is <= the current score, then this state is
       //   unreachable, so return bestSoFar (this node will be discarded)
-      return bestSoFar;
+      score = bestSoFar;
+      return score;
     }
     // If this score is higher than the lowerBound, increase the bound
     lowerBound = std::max(lowerBound, bestSoFar);
   }
-  return bestSoFar;
+  score = bestSoFar;
+  return score;
 }
