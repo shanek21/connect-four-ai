@@ -50,22 +50,22 @@ int Solver::negamax(State s, int lowerBound, int upperBound) {
   }
 
   // Assume current player will lose
-  int bestScore = s.getNumMoves() - s.getBoardSize();
+  int bestSoFar = s.getNumMoves() - s.getBoardSize();
 
   for (auto it = moveOrder.begin(); it != moveOrder.end(); it++) {
     int x = *it;
     if (!s.isPlayable(x)) continue;
     State nextState = s.play(x);
     // Negative scores for our opponent are positive for us
-    bestScore = std::max(bestScore,
+    bestSoFar = std::max(bestSoFar,
         -negamax(nextState, -upperBound, -lowerBound));
-    // If this score is higher than the lowerBound, increase the bound
-    lowerBound = std::max(lowerBound, bestScore);
-    if (upperBound <= lowerBound) {
-      // If the upperBound is <= the current lower bound, then this state is
-      //   unreachable, so return bestScore (this node will be discarded)
-      return bestScore;
+    if (upperBound <= bestSoFar) {
+      // If the upperBound is <= the current score, then this state is
+      //   unreachable, so return bestSoFar (this node will be discarded)
+      return bestSoFar;
     }
+    // If this score is higher than the lowerBound, increase the bound
+    lowerBound = std::max(lowerBound, bestSoFar);
   }
-  return bestScore;
+  return bestSoFar;
 }
