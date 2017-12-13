@@ -1,6 +1,7 @@
 #include <limits>
 #include <stdexcept>
 #include <iostream>
+#include <cassert>
 #include "../include/solver.h"
 
 Solver::Solver() : table(67108744) {  // use ~64 MB of data
@@ -50,9 +51,12 @@ int8_t Solver::negamax(State s, int8_t lowerBound, int8_t upperBound) {
   int8_t bestPossibleScore = (s.getBoardSize() - s.getNumMoves() - 1) / 2;
   int8_t tableVal = table.get(s.boardKey());
 
+  assert(bestPossibleScore >= 0);
+
   // If there's already an upper bound stored in the table, it is the best
   //   possible score
-  if (tableVal != EMPTY_VAL) bestPossibleScore = tableVal;
+  if (tableVal != EMPTY_VAL && tableVal < bestPossibleScore)
+    bestPossibleScore = tableVal;
 
   // Can't do better than bestPossibleScore
   upperBound = std::min(upperBound, bestPossibleScore);
