@@ -11,6 +11,7 @@ class Table {
  public:
   explicit Table(uint32_t storedBoards);
   void put(uint64_t boardKey, int8_t score);
+  void reset();
   int8_t get(uint64_t boardKey);
 
  private:

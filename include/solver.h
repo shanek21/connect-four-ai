@@ -2,6 +2,7 @@
 #define INCLUDE_SOLVER_H_
 
 #include <list>
+#include <vector>
 #include <cstdint>
 #include "../include/state.h"
 #include "../include/table.h"
@@ -9,7 +10,8 @@
 class Solver {
  public:
   Solver();
-  int score(State S);
+  int score(State s);
+  std::vector<int> heuristicMoveOrder(State s) const;
  private:
   Table table;
   std::list<int> moveOrder;
