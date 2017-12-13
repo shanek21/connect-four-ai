@@ -167,8 +167,8 @@ TEST_CASE("winningPositions()") {
   State::TileBoard blackWins = S.winningPositions(State::TileType::Black);
   REQUIRE(redWins.count() == 2);
   REQUIRE(blackWins.count() == 2);
-  REQUIRE(State::hasTile(redWins, 6, 1));
-  REQUIRE(State::hasTile(redWins, 6, 4));
+  REQUIRE(State::hasTile(redWins, 5, 1));
+  REQUIRE(State::hasTile(redWins, 5, 4));
   REQUIRE(State::hasTile(blackWins, 3, 4));
   REQUIRE(State::hasTile(blackWins, 1, 0));
 }
