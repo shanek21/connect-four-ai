@@ -31,4 +31,17 @@ TEST_CASE("negamax()") {
     S = State::boardFromNums("7172212567451542223676134464437761515");
     REQUIRE(solver.negamax(S) == 0);
   }
+  SECTION("Broken0") {
+    State S = State::boardFromNums("1667675535724753771415352132");
+    REQUIRE(solver.negamax(S) == 1);
+  }
+  // These test cases might fail, but for now they're too slow
+  /* SECTION("Broken1") { */
+  /*   State S = State::boardFromNums("427631264721"); */
+  /*   REQUIRE(solver.negamax(S) == 10); */
+  /* } */
+  /* SECTION("Broken2") { */
+  /*   State S = State::boardFromNums("11163142533736577"); */
+  /*   REQUIRE(solver.negamax(S) == 2); */
+  /* } */
 }
