@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <cassert>
+#include <algorithm>
 #include "../include/solver.h"
 
 Solver::Solver() : table(67108744) {  // use ~64 MB of data
@@ -18,6 +19,33 @@ void Solver::initMoveOrder(int w) {
   /*   moveOrder.push_back(--i); */
   /*   moveOrder.push_back(++j); */
   /* } */
+}
+
+std::vector<int> Solver::heuristicMoveOrder(State s) const {
+  std::vector<int> winningMovesCreated(State::WIDTH);
+  // Copy moveOrder to order
+  std::vector<int> order(moveOrder.size());
+  int i = 0;
+  for (auto it = moveOrder.begin(); it != moveOrder.end(); it++) {
+    int j = *it;
+    order[i] = j;
+    i++;
+  }
+  // Calculate our heuristic for each move in order
+  for (auto it = order.begin(); it != order.end(); it++) {
+    int i = *it;
+    if (!s.isPlayable(i)) {
+      continue;
+    }
+    winningMovesCreated[i] = s.play(i).winningPositions(
+          s.getNextTileColor()).count();
+  }
+  // Sort the heuristic order based on the amount of winning moves created
+  std::sort(order.begin(), order.end(),
+      [&winningMovesCreated](const int a, const int b) -> bool {
+      return winningMovesCreated[a] > winningMovesCreated[b];
+    });
+  return order;
 }
 
 /**
@@ -67,7 +95,9 @@ int8_t Solver::negamax(State s, int8_t lowerBound, int8_t upperBound) {
   // Assume current player will lose
   int8_t bestSoFar = (s.getNumMoves() - s.getBoardSize()) / 2;
 
-  for (auto it = moveOrder.begin(); it != moveOrder.end(); it++) {
+  std::vector<int> heurOrder = heuristicMoveOrder(s);
+  for (auto it = heurOrder.begin(); it != heurOrder.end(); it++) {
+  /* for (auto it = moveOrder.begin(); it != moveOrder.end(); it++) { */
     int x = *it;
     if (!s.isPlayable(x)) continue;
     State nextState = s.play(x);
@@ -89,6 +119,7 @@ int8_t Solver::negamax(State s, int8_t lowerBound, int8_t upperBound) {
 }
 
 int Solver::score(State s) {
+  table.reset();
   /* return negamax(s, -s.getBoardSize() / 2, s.getBoardSize() / 2); */
   int min = -s.getBoardSize() / 2;
   int max = s.getBoardSize() / 2;

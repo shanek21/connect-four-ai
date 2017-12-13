@@ -1,6 +1,7 @@
 #include <cassert>
 #include <cstdint>
 #include <iostream>
+#include <algorithm>
 #include "../include/table.h"
 
 Table::Table(uint32_t numBits) {
@@ -28,3 +29,8 @@ int8_t Table::get(uint64_t boardKey) {
   return EMPTY_VAL;
 }
 
+
+void Table::reset() {
+  Entry emptyStruct = {0, EMPTY_VAL};
+  std::fill(table.begin(), table.end(), emptyStruct);
+}
