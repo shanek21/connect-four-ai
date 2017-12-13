@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cassert>
 #include <stdexcept>
 
 #include "../include/state.h"
@@ -41,13 +42,59 @@ State::TileBoard State::getBlackBoard() const {
   return blackBoard;
 }
 
+State::TileBoard State::columnMask(int col) {
+  assert(col < TILEBOARD_WIDTH);
+  State::TileBoard mask = 1LL << col;
+  for (int i = 0; i < TILEBOARD_HEIGHT - 1; i++)
+    mask |= mask << TILEBOARD_WIDTH;
+  return mask;
+}
+
 State::TileBoard State::winningPositions(TileType color) const {
-  State::TileBoard b;
-  return b;
+  int w = TILEBOARD_WIDTH;
+  State::TileBoard b = color == Red ? getRedBoard() : getBlackBoard();
+
+  State::TileBoard vertWins = (b >> w) & (b >> 2*w) & (b >> 3*w);
+
+  State::TileBoard horzWins;
+  // The right side of two horizontal pieces
+  State::TileBoard rightEdge = (b << 1) & (b << 2);
+  // If there is a piece either on the right of, or 3 to the left of the
+  //   rightEdge, then RE is a winning play
+  horzWins |= rightEdge & (b << 3);
+  horzWins |= rightEdge & (b >> 1);
+
+  State::TileBoard leftEdge = (b >> 1) & (b >> 2);
+  horzWins |= leftEdge & (b >> 3);
+  horzWins |= leftEdge & (b << 1);
+
+  State::TileBoard diagWins;
+  rightEdge = (b << (w - 1)) & (b << 2 * (w - 1));
+  diagWins |= rightEdge & (b << 3 * (w - 1));
+  diagWins |= rightEdge & (b >> 1 * (w - 1));
+
+  rightEdge = (b >> (w - 1)) & (b >> 2 * (w - 1));
+  diagWins |= rightEdge & (b >> 3 * (w - 1));
+  diagWins |= rightEdge & (b << 1 * (w - 1));
+
+  rightEdge = (b << (w + 1)) & (b << 2 * (w + 1));
+  diagWins |= rightEdge & (b << 3 * (w + 1));
+  diagWins |= rightEdge & (b >> 1 * (w + 1));
+
+  rightEdge = (b >> (w + 1)) & (b >> 2 * (w + 1));
+  diagWins |= rightEdge & (b >> 3 * (w + 1));
+  diagWins |= rightEdge & (b << 1 * (w + 1));
+
+
+  State::TileBoard dummyColumn = columnMask(WIDTH);
+  State::TileBoard allWins = vertWins | horzWins | diagWins;
+  State::TileBoard alreadyPlayed = getRedBoard() | getBlackBoard();
+  State::TileBoard cantWin = alreadyPlayed | dummyColumn;
+  return allWins & ~cantWin;
 }
 
 bool State::hasTile(TileBoard board, int row, int col) {
-  return false;
+  return board[(row * TILEBOARD_WIDTH) + col];
 }
 
 uint64_t State::boardKey() const {
