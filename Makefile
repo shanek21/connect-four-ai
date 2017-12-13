@@ -56,7 +56,11 @@ $(TEST_DIR)/state: $(OBJ_DIR)/test_main.o $(TEST_DIR)/state.cpp $(OBJ_DIR)/state
 $(TEST_DIR)/solver: $(OBJ_DIR)/test_main.o $(TEST_DIR)/solver.cpp $(OBJ_DIR)/solver.o $(OBJ_DIR)/state.o $(OBJ_DIR)/table.o 
 	$(CC) $(C_FLAGS) $(OBJ_DIR)/test_main.o $(TEST_DIR)/solver.cpp $(OBJ_DIR)/solver.o $(OBJ_DIR)/state.o $(OBJ_DIR)/table.o -o $(TEST_DIR)/solver
 
-test: directories $(TEST_DIR)/state $(TEST_DIR)/solver
+$(TEST_DIR)/table: $(OBJ_DIR)/test_main.o $(TEST_DIR)/table.cpp $(OBJ_DIR)/table.o $(OBJ_DIR)/state.o
+	$(CC) $(C_FLAGS) $(OBJ_DIR)/test_main.o $(TEST_DIR)/table.cpp $(OBJ_DIR)/table.o $(OBJ_DIR)/state.o -o $(TEST_DIR)/table
+
+test: directories $(TEST_DIR)/state $(TEST_DIR)/solver $(TEST_DIR)/table
+	./$(TEST_DIR)/table
 	./$(TEST_DIR)/state
 	./$(TEST_DIR)/solver
 

@@ -15,12 +15,14 @@ uint32_t Table::getTableIndex(uint64_t board) const {
 }
 
 void Table::put(uint64_t boardKey, int8_t score) {
+  assert(boardKey < (1LL << 56));
   uint32_t tableIndex = getTableIndex(boardKey);
   table[tableIndex].board = boardKey;
   table[tableIndex].score = score;
 }
 
 int8_t Table::get(uint64_t boardKey) {
+  assert(boardKey < (1LL << 56));
   uint32_t tableIndex = getTableIndex(boardKey);
   if (table[tableIndex].board == boardKey) return table[tableIndex].score;
   return EMPTY_VAL;
