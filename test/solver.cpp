@@ -52,6 +52,8 @@ TEST_CASE("score()") {
     REQUIRE(solver.score(S) == 0);
     S = State::boardFromNums("7172212567451542223676134464437761515");
     REQUIRE(solver.score(S) == 0);
+    S = State::boardFromNums("72324716156654");
+    REQUIRE(solver.score(S) == 0);
   }
   SECTION("Test1") {
     State S = State::boardFromNums("15153233665512265253266243367171");
