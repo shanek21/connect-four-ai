@@ -2,42 +2,65 @@
 #include "../include/bit_board.h"
 
 
-TEST_CASE("get()") {
+TEST_CASE("set() and get()") {
   BitBoard bb;
-  bb.set(HEIGHT - 2, WIDTH - 1);
-  REQUIRE(bb.get(HEIGHT - 2, WIDTH - 1) == 1);
+
+  SECTION("simple") {
+    bb.set(0, 0);
+    REQUIRE(bb.get(0, 0) == 1);
+    bb.set(2, 5);
+    REQUIRE(bb.get(2, 5) == 1);
+    REQUIRE(bb.get(2, 2) == 0);
+  }
+
+  SECTION("complex") {
+    int minRow = 4;
+    int maxRow = 6;
+    int minCol = 1;
+    int maxCol = 4;
+    bb.set(minRow, maxRow, minCol, maxCol);
+    for (int row = minRow; row < maxRow; row++) {
+      for (int col = minCol; col < maxCol; col++) {
+        REQUIRE(bb.get(row, col) == 1);
+      }
+    }
+  }
 }
 
-/*
-TEST_CASE("get()") {
-  SECTION("simple case") {
-    State s1;
-    State s2 = s1.play(State::TileType::Red, 1);
-    REQUIRE(s1.getTile(State::HEIGHT - 1, 1) == State::TileType::Empty);
-    REQUIRE(s2.getTile(State::HEIGHT - 1, 1) == State::TileType::Red);
-    REQUIRE(s2.isRedTile(State::HEIGHT - 1, 1));
-    REQUIRE(!s2.isBlackTile(State::HEIGHT - 1, 1));
-  }
-  SECTION("complex case") {
-    State S;
-    S = S.play(1);
-    S = S.play(0);
-    S = S.play(2);
-    S = S.play(1);
-    S = S.play(2);
-    S = S.play(2);
-    S = S.play(3);
-    S = S.play(3);
-    S = S.play(3);
-    REQUIRE(S.isBlackTile(State::HEIGHT - 1, 0));
-    REQUIRE(S.isRedTile(State::HEIGHT - 1, 1));
-    REQUIRE(S.isBlackTile(State::HEIGHT - 2, 1));
-    REQUIRE(S.isRedTile(State::HEIGHT - 1, 2));
-    REQUIRE(S.isRedTile(State::HEIGHT - 2, 2));
-    REQUIRE(S.isBlackTile(State::HEIGHT - 3, 2));
-    REQUIRE(S.isRedTile(State::HEIGHT - 1, 3));
-    REQUIRE(S.isBlackTile(State::HEIGHT - 2, 3));
-    REQUIRE(S.isRedTile(State::HEIGHT - 3, 3));
-  }
+TEST_CASE("shift()") {
+  BitBoard bb;
+  bb.set(0, 0);
+  bb = bb.shift(1);
+  REQUIRE(bb.get(0, 1) == 1);
+  bb.set(1, 1);
+  bb = bb.shift(-1);
+  REQUIRE(bb.get(1, 0) == 1);
 }
-*/
+
+TEST_CASE("circularShift()") {
+  BitBoard bb;
+  bb.set(3, 0);
+  bb = bb.circularShift(1);
+  REQUIRE(bb.get(3, 1) == 1);
+
+  bb.set(4, 0);
+  bb = bb.circularShift(WIDTH);
+  REQUIRE(bb.get(4, 0) == 1);
+
+  bb.set(1, 6);
+  bb = bb.circularShift(3);
+  REQUIRE(bb.get(1, 2) == 1);
+
+  bb.set(0, 0);
+  bb.set(0, 1);
+  bb.set(0, 2);
+  bb.set(0, 4);
+  bb = bb.circularShift(-2);
+  REQUIRE(bb.get(0, 0) == 1);
+  REQUIRE(bb.get(0, 1) == 0);
+  REQUIRE(bb.get(0, 2) == 1);
+  REQUIRE(bb.get(0, 3) == 0);
+  REQUIRE(bb.get(0, 4) == 0);
+  REQUIRE(bb.get(0, 5) == 1);
+  REQUIRE(bb.get(0, 6) == 1);
+}

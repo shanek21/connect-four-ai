@@ -16,9 +16,9 @@ class BitBoard {
   template <size_t size>
   explicit BitBoard(std::bitset<size> b);
 
-  void initializeMasks();
-
   bool get(int row, int col) const;
+
+  bool any() const;
 
   BitBoard shift(int n) const;
 
@@ -28,17 +28,20 @@ class BitBoard {
 
   void set(int row, int col);
 
-  BitBoard operator&(const BitBoard* other) const;
+  BitBoard operator&(const BitBoard& other) const;
 
   BitBoard operator|(const BitBoard& other) const;
 
- private:
-  BitBoard* LEFT_MASK;
-  BitBoard* RIGHT_MASK;
-  static bool masksInitialized = false;
+  BitBoard operator>>(int offset) const;
 
+  BitBoard operator<<(int offset) const;
+
+  friend std::ostream& operator<<(std::ostream& os, const BitBoard& bb);
+
+ private:
   std::bitset<(WIDTH + 1) * HEIGHT> bits;
 };
+
 
 
 #endif   // INCLUDE_BIT_BOARD_H_
