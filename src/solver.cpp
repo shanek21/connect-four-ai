@@ -8,14 +8,15 @@ Solver::Solver() : table(67108744) {  // use ~64 MB of data
 }
 
 void Solver::initMoveOrder(int w) {
-  int i = (w - 1) / 2;
-  int j = w / 2;
-  moveOrder.push_back(i);
-  if (i != j) moveOrder.push_back(j);
-  while (i > 0) {
-    moveOrder.push_back(--i);
-    moveOrder.push_back(++j);
-  }
+  moveOrder = {3, 4, 2, 1, 5, 6, 0};
+  /* int i = (w - 1) / 2; */
+  /* int j = w / 2; */
+  /* moveOrder.push_back(i); */
+  /* if (i != j) moveOrder.push_back(j); */
+  /* while (i > 0) { */
+  /*   moveOrder.push_back(--i); */
+  /*   moveOrder.push_back(++j); */
+  /* } */
 }
 
 int Solver::negamax(State s) {
