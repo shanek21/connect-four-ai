@@ -160,3 +160,15 @@ TEST_CASE("boardFromNums()") {
   REQUIRE(S.getTile(State::HEIGHT - 1, 2) == State::TileType::Red);
   REQUIRE(S.getTile(State::HEIGHT - 2, 2) == State::TileType::Black);
 }
+
+TEST_CASE("winningPositions()") {
+  State S = State::boardFromNums("113141476644");
+  State::TileBoard redWins = S.winningPositions(State::TileType::Red);
+  State::TileBoard blackWins = S.winningPositions(State::TileType::Black);
+  REQUIRE(redWins.count() == 2);
+  REQUIRE(blackWins.count() == 2);
+  REQUIRE(State::hasTile(redWins, 6, 1));
+  REQUIRE(State::hasTile(redWins, 6, 4));
+  REQUIRE(State::hasTile(blackWins, 3, 4));
+  REQUIRE(State::hasTile(blackWins, 1, 0));
+}
