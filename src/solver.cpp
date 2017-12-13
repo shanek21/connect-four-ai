@@ -9,14 +9,15 @@ Solver::Solver() {
 }
 
 void Solver::initMoveOrder(int w) {
-  int i = (w - 1) / 2;
-  int j = w / 2;
-  moveOrder.push_back(i);
-  if (i != j) moveOrder.push_back(j);
-  while (i > 0) {
-    moveOrder.push_back(--i);
-    moveOrder.push_back(++j);
-  }
+  moveOrder = {3, 4, 2, 1, 5, 6, 0};
+  /* int i = (w - 1) / 2; */
+  /* int j = w / 2; */
+  /* moveOrder.push_back(i); */
+  /* if (i != j) moveOrder.push_back(j); */
+  /* while (i > 0) { */
+  /*   moveOrder.push_back(--i); */
+  /*   moveOrder.push_back(++j); */
+  /* } */
 }
 
 int Solver::negamax(State s) const {
@@ -40,12 +41,12 @@ int Solver::negamax(State s, int lowerBound, int upperBound) const {
     int x = *it;
     if (s.isPlayable(x) && s.isWinningPlay(s.getNextTileColor(), x)) {
       // If there is a winning move
-      return s.getBoardSize() - s.getNumMoves();
+      return (s.getBoardSize() - s.getNumMoves() + 1) / 2;
     }
   }
 
   // Best case scenario, we win after our opponents next move
-  int bestPossibleScore = std::max(s.getBoardSize() - s.getNumMoves() - 2, 0);
+  int bestPossibleScore = std::max(s.getBoardSize() - s.getNumMoves() - 1, 0);
   // Can't do better than bestPossibleScore
   upperBound = std::min(upperBound, bestPossibleScore);
   if (lowerBound >= upperBound) {
@@ -55,7 +56,7 @@ int Solver::negamax(State s, int lowerBound, int upperBound) const {
   }
 
   // Assume current player will lose
-  int bestSoFar = s.getNumMoves() - s.getBoardSize();
+  int bestSoFar = (s.getNumMoves() - s.getBoardSize()) / 2;
 
   for (auto it = moveOrder.begin(); it != moveOrder.end(); it++) {
     int x = *it;
