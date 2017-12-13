@@ -1,3 +1,4 @@
+#include <iostream>
 #include "../lib/catch.hpp"
 #include "../include/state.h"
 #include "../include/solver.h"
@@ -35,6 +36,12 @@ TEST_CASE("score()") {
     REQUIRE(solver.score(S) > 0);
     S = State::boardFromNums("24617524315172127");
     REQUIRE(solver.score(S) > 0);
+    // This takes about 1.5 seconds
+    // This is unsolvable (for now)
+    /* S = State::boardFromNums("266674777"); */
+    /* REQUIRE(solver.score(S) == 4); */
+    /* S = State::boardFromNums(""); */
+    /* REQUIRE(solver.score(S) > 0); */
   }
   SECTION("Draw") {
     State S = State::boardFromNums("74425337641465475671176741236615215533");
@@ -62,4 +69,20 @@ TEST_CASE("score()") {
     State S = State::boardFromNums("64261557453565765234637331431614777122");
     REQUIRE(solver.score(S) == 0);
   }
+}
+
+TEST_CASE("heuristicMoveOrder()") {
+  Solver solver;
+  State S = State::boardFromNums("1235361");
+  std::vector<int> order = solver.heuristicMoveOrder(S);
+  REQUIRE(order[0] == 3);
+  REQUIRE(order[1] == 6);
+  S = S.play(5);
+  order = solver.heuristicMoveOrder(S);
+  REQUIRE(order[0] == 2);
+  REQUIRE(order[1] == 1);
+  REQUIRE(order[2] == 0);
+  S = State::boardFromNums("");
+  order = solver.heuristicMoveOrder(S);
+  REQUIRE(order[0] == 3);
 }
