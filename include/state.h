@@ -52,6 +52,8 @@ class State {
 
   static bool hasTile(TileBoard board, int row, int col);
 
+  static TileBoard columnMask(int col);
+
   /**
    * @param tile - tile type to play
    * @param col - the column to play the tile in
