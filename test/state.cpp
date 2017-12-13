@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "../lib/catch.hpp"
 #include "../include/state.h"
 
