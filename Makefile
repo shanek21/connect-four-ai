@@ -50,14 +50,18 @@ $(OBJ_DIR)/bit_board.o: $(SRC_DIR)/bit_board.cpp
 $(OBJ_DIR)/test_main.o: $(TEST_DIR)/test_main.cpp
 	$(CC) $(C_FLAGS) $(TEST_DIR)/test_main.cpp -c -o $(OBJ_DIR)/test_main.o
 
-$(TEST_DIR)/state: $(OBJ_DIR)/test_main.o $(TEST_DIR)/state.cpp $(OBJ_DIR)/state.o
-	$(CC) $(C_FLAGS) $(OBJ_DIR)/test_main.o $(TEST_DIR)/state.cpp $(OBJ_DIR)/state.o -o $(TEST_DIR)/state
+$(TEST_DIR)/state: $(OBJ_DIR)/test_main.o $(OBJ_DIR)/bit_board.o $(TEST_DIR)/state.cpp $(OBJ_DIR)/state.o $(INC_DIR)/state.h
+	$(CC) $(C_FLAGS) $(OBJ_DIR)/test_main.o $(OBJ_DIR)/bit_board.o $(TEST_DIR)/state.cpp $(OBJ_DIR)/state.o -o $(TEST_DIR)/state
 
 $(TEST_DIR)/solver: $(OBJ_DIR)/test_main.o $(TEST_DIR)/solver.cpp $(OBJ_DIR)/solver.o $(OBJ_DIR)/state.o 
 	$(CC) $(C_FLAGS) $(OBJ_DIR)/test_main.o $(TEST_DIR)/solver.cpp $(OBJ_DIR)/solver.o $(OBJ_DIR)/state.o -o $(TEST_DIR)/solver
 
-test: directories $(TEST_DIR)/state $(TEST_DIR)/solver
+$(TEST_DIR)/bit_board: $(OBJ_DIR)/test_main.o $(TEST_DIR)/bit_board.cpp $(OBJ_DIR)/bit_board.o $(INC_DIR)/bit_board.h
+	$(CC) $(C_FLAGS) $(OBJ_DIR)/test_main.o $(TEST_DIR)/bit_board.cpp $(OBJ_DIR)/bit_board.o -o $(TEST_DIR)/bit_board
+
+test: directories $(TEST_DIR)/state $(TEST_DIR)/bit_board $(TEST_DIR)/solver
 	./$(TEST_DIR)/state
+	./$(TEST_DIR)/bit_board
 	./$(TEST_DIR)/solver
 
 # Remove the executable
