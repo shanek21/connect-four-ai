@@ -2,8 +2,12 @@
 #define INCLUDE_STATE_H_
 
 
+#include <assert.h>
+
 #include <bitset>
 #include <string>
+
+#include "./bit_board.h"
 
 
 class State {
@@ -11,7 +15,6 @@ class State {
   static const int WIDTH = 7;
   static const int HEIGHT = 6;
 
-  typedef std::bitset<(WIDTH + 1) * HEIGHT> TileBoard;
   enum TileType { Red, Black, Empty };
 
   /**
@@ -33,9 +36,9 @@ class State {
 
   bool isEmpty(int row, int col) const;
 
-  TileBoard getRedBoard() const;
+  BitBoard getRedBoard() const;
 
-  TileBoard getBlackBoard() const;
+  BitBoard getBlackBoard() const;
 
   int getBoardSize() const;
 
@@ -59,22 +62,21 @@ class State {
    */
   bool isBoardFull() const;
 
-
   /**
   * @returns the color of the next tile to be played
   */
   TileType getNextTileColor() const;
   static State boardFromNums(std::string nums);
 
+  void placeTile(TileType color, int row, int col);
+
  protected:
-  TileBoard redBoard;
-  TileBoard blackBoard;
+  BitBoard redBoard;
+  BitBoard blackBoard;
 
   int numMoves;
 
   void incrementNumMoves();
-
-  void placeTile(TileType color, int row, int col);
 };
 
 std::ostream& operator<<(std::ostream& os, const State::TileType& t);
