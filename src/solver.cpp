@@ -60,15 +60,21 @@ std::vector<int> Solver::heuristicMoveOrder(State s) const {
  *   (moves_to_lose - board_size - 2) / 2. Best possible score is 21, worst
  *   is -21.
  */
-int8_t Solver::negamax(State s, int8_t lowerBound, int8_t upperBound) {
+std::pair<int, int> Solver::negamax(State s, int8_t lowerBound,
+    int8_t upperBound) {
+  std::pair<int, int> result;
+  result.first = -1;
+  result.second = 0;
   int8_t score;
-  if (s.isBoardFull()) return 0;  // if the game is over, it's a draw
+  if (s.isBoardFull()) return result;  // if the game is over, it's a draw
   for (auto it = moveOrder.begin(); it != moveOrder.end(); it++) {
     int x = *it;
     if (s.isPlayable(x) && s.isWinningPlay(s.getNextTileColor(), x)) {
       // If there is a winning move
       score = (s.getBoardSize() - s.getNumMoves() + 1) / 2;
-      return score;
+      result.first = x;
+      result.second = score;
+      return result;
     }
   }
 
@@ -90,7 +96,8 @@ int8_t Solver::negamax(State s, int8_t lowerBound, int8_t upperBound) {
     // If elsewhere we've found a higher lower bound, then assume this position
     // has the best possible score, since it will be discarded anyway
     score = upperBound;
-    return score;
+    result.second = score;
+    return result;
   }
 
   // Assume current player will lose
@@ -103,34 +110,50 @@ int8_t Solver::negamax(State s, int8_t lowerBound, int8_t upperBound) {
     if (!s.isPlayable(x)) continue;
     State nextState = s.play(x);
     // Negative scores for our opponent are positive for us
-    int8_t positionScore = -negamax(nextState, -upperBound, -lowerBound);
+    int8_t positionScore = -negamax(nextState, -upperBound, -lowerBound).second;
     bestSoFar = std::max(bestSoFar, positionScore);
     if (upperBound <= bestSoFar) {
       // If the upperBound is <= the current score, then this state is
       //   unreachable, so return bestSoFar (this node will be discarded)
       score = bestSoFar;
-      return score;
+      result.second = score;
+      return result;
+    }
+    if (bestSoFar > lowerBound) {
+      result.first = x;
     }
     // If this score is higher than the lowerBound, increase the bound
     lowerBound = std::max(lowerBound, bestSoFar);
   }
   score = bestSoFar;
   table.put(s.boardKey(), score);
-  return score;
+  result.second = score;
+  return result;
+  /* return score; */
 }
 
-int Solver::score(State s) {
+std::pair<int, int> Solver::bestMoveAndScore(State S) {
   table.reset();
-  int min = -s.getBoardSize() / 2;
-  int max = s.getBoardSize() / 2;
+  int min = -S.getBoardSize() / 2;
+  int max = S.getBoardSize() / 2;
+  std::pair<int, int> nm;
   // run a binary search
   while (min < max) {
     int med = min + (max - min) / 2;
-    int negamaxScore = negamax(s, med, med + 1);
-    if (negamaxScore <= med)
-      max = negamaxScore;
+    nm = negamax(S, med, med + 1);
+    if (nm.second <= med)
+      max = nm.second;
     else
-      min = negamaxScore;
+      min = nm.second;
   }
-  return min;
+  return nm;
 }
+
+int Solver::score(State s) {
+  return bestMoveAndScore(s).second;
+}
+
+int Solver::bestMove(State s) {
+  return bestMoveAndScore(s).first;
+}
+
