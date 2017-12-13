@@ -41,6 +41,15 @@ State::TileBoard State::getBlackBoard() const {
   return blackBoard;
 }
 
+State::TileBoard State::winningPositions(TileType color) const {
+  State::TileBoard b;
+  return b;
+}
+
+bool State::hasTile(TileBoard board, int row, int col) {
+  return false;
+}
+
 uint64_t State::boardKey() const {
   // TODO(davidabrahams): I'm not entirely sure how this makes each potential
   //   gamestate have a unique key
@@ -65,6 +74,7 @@ State State::play(int col) const {
 }
 
 State State::play(State::TileType color, int col) const {
+  // TODO(davidabrahams): do this with bitshifting
   State stateAfterPlay = State(this);
   for (int row = HEIGHT - 1; row >= 0; row--) {
     if (isEmpty(row, col)) {

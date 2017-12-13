@@ -45,6 +45,10 @@ class State {
 
   State play(int col) const;
 
+  TileBoard winningPositions(TileType color) const;
+
+  static bool hasTile(TileBoard board, int row, int col);
+
   /**
    * @param tile - tile type to play
    * @param col - the column to play the tile in
