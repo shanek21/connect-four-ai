@@ -55,8 +55,9 @@ int8_t Solver::negamax(State s, int8_t lowerBound, int8_t upperBound) {
 
   // If there's already an upper bound stored in the table, it is the best
   //   possible score
-  if (tableVal != EMPTY_VAL && tableVal < bestPossibleScore)
+  if (tableVal != EMPTY_VAL) {
     bestPossibleScore = tableVal;
+  }
 
   // Can't do better than bestPossibleScore
   upperBound = std::min(upperBound, bestPossibleScore);

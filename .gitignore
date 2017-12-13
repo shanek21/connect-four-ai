@@ -10,3 +10,4 @@ connect_four
 # The executables for our tests
 test/state
 test/solver
+test/table
