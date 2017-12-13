@@ -37,6 +37,10 @@ class State {
 
   TileBoard getBlackBoard() const;
 
+  uint64_t boardKey() const;
+
+  TileBoard getNextToMoveBoard() const;
+
   int getBoardSize() const;
 
   State play(int col) const;
@@ -64,6 +68,7 @@ class State {
   * @returns the color of the next tile to be played
   */
   TileType getNextTileColor() const;
+
   static State boardFromNums(std::string nums);
 
  protected:

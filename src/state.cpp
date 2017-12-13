@@ -41,6 +41,21 @@ State::TileBoard State::getBlackBoard() const {
   return blackBoard;
 }
 
+uint64_t State::boardKey() const {
+  // TODO(davidabrahams): I'm not entirely sure how this makes each potential
+  //   gamestate have a unique key
+  uint64_t currPlayerBoard = (getNextTileColor() ==
+      Red ? getRedBoard() : getBlackBoard()).to_ulong();
+  uint64_t nextPlayerBoard = (getNextTileColor() ==
+      Black ? getRedBoard() : getBlackBoard()).to_ulong();
+  uint64_t key = currPlayerBoard + (currPlayerBoard | nextPlayerBoard);
+  return key;
+}
+
+State::TileBoard State::getNextToMoveBoard() const {
+  return getNextTileColor() == Red ? getRedBoard() : getBlackBoard();
+}
+
 State::TileType State::getNextTileColor() const {
   return (numMoves % 2 == 0) ? Red : Black;
 }
