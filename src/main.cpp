@@ -4,6 +4,7 @@
 #include "../include/renderer.h"
 
 int main() {
-  setupScreen();
+  State s1;
+  s1 = setupScreen(s1);
   shutDownScreen();
 }
