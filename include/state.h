@@ -13,6 +13,9 @@ class State {
 
   typedef std::bitset<(WIDTH + 1) * HEIGHT> TileBoard;
   enum TileType { Red, Black, Empty };
+  enum GameType { PvP, CvC, PvC };
+
+  GameType gameType;
 
   /**
    * Default constructor
