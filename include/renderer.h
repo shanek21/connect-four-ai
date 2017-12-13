@@ -28,6 +28,7 @@ int waitUntilMoveSelected(State s);
 void displayGrid(State s);
 State setupScreen(State s);
 void shutDownScreen();
+void PvP(State s);
 
 
 #endif  // INCLUDE_RENDERER_H_

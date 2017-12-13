@@ -177,3 +177,18 @@ void shutDownScreen() {
   }
   endwin();                         // End curses mode
 }
+
+void PvP(State s) {
+  State::TileType currPlayer;
+  bool gameFinished = false;
+  int selection;
+  while (!gameFinished) {
+    currPlayer = s.getNextTileColor();
+    selection = waitUntilMoveSelected(s);
+    gameFinished = gameFinished || s.isWinningPlay(currPlayer, selection);
+    printw("%i", selection);
+    s = s.play(selection);
+    displayGrid(s);
+    gameFinished = gameFinished || s.isBoardFull();
+  }
+}
