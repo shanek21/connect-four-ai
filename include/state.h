@@ -2,6 +2,8 @@
 #define INCLUDE_STATE_H_
 
 
+#include <assert.h>
+
 #include <bitset>
 #include <string>
 

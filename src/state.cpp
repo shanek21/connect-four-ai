@@ -67,7 +67,6 @@ bool State::isPlayable(int col) const {
 }
 
 bool State::isWinningPlay(State::TileType color, int col) const {
-  /*
   State s = play(color, col);
   BitBoard bb = (color == Red) ? s.getRedBoard() : s.getBlackBoard();
   BitBoard temp;
@@ -91,7 +90,6 @@ bool State::isWinningPlay(State::TileType color, int col) const {
   temp = bb & (bb >> (WIDTH + 2));
   temp = temp & (temp >> 2 * (WIDTH + 2));
   if (temp.any()) return true;
-  */
 
   return false;
 }
@@ -118,16 +116,13 @@ bool State::isBoardFull() const {
 }
 
 void State::placeTile(TileType color, int row, int col) {
-  if (color == Empty)
-    throw std::runtime_error("Tried to place an empty tile");
-
-  if (!isEmpty(row, col))
-    throw std::runtime_error("Tried to overwrite an existing tile");
+  assert(color != Empty);
+  assert(isEmpty(row, col));
 
   if (color == Red) {
-    getRedBoard().set(row, col);
+    redBoard.set(row, col);
   } else {
-    getBlackBoard().set(row, col);
+    blackBoard.set(row, col);
   }
 }
 
