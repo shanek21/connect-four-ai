@@ -15,11 +15,11 @@ State::State(const State* s) {
 }
 
 bool State::isRedTile(int row, int col) const {
-  return redBoard[(row * (WIDTH + 1)) + col];
+  return redBoard[(row * TILEBOARD_WIDTH) + col];
 }
 
 bool State::isBlackTile(int row, int col) const {
-  return blackBoard[(row * (WIDTH + 1)) + col];
+  return blackBoard[(row * TILEBOARD_WIDTH) + col];
 }
 
 State::TileType State::getTile(int row, int col) const {
@@ -102,18 +102,18 @@ bool State::isWinningPlay(State::TileType color, int col) const {
   if (temp.any()) return true;
 
   // Check |
-  temp = tb & (tb >> (WIDTH + 1));
-  temp = temp & (temp >> 2 * (WIDTH + 1));
+  temp = tb & (tb >> TILEBOARD_WIDTH);
+  temp = temp & (temp >> 2 * TILEBOARD_WIDTH);
   if (temp.any()) return true;
 
   // Check /
-  temp = tb & (tb >> WIDTH);
-  temp = temp & (temp >> 2 * WIDTH);
+  temp = tb & (tb >> (TILEBOARD_WIDTH - 1));
+  temp = temp & (temp >> 2 * (TILEBOARD_WIDTH - 1));
   if (temp.any()) return true;
 
   // Check top-left to bot-right diagonal
-  temp = tb & (tb >> (WIDTH + 2));
-  temp = temp & (temp >> 2 * (WIDTH + 2));
+  temp = tb & (tb >> (TILEBOARD_WIDTH + 1));
+  temp = temp & (temp >> 2 * (TILEBOARD_WIDTH + 1));
   if (temp.any()) return true;
 
   return false;
@@ -149,9 +149,9 @@ void State::placeTile(State::TileType color, int row, int col) {
 
 
   if (color == Red)
-    redBoard[(row * (WIDTH + 1)) + col] = 1;
+    redBoard[(row * TILEBOARD_WIDTH) + col] = 1;
   else
-    blackBoard[(row * (WIDTH + 1)) + col] = 1;
+    blackBoard[(row * TILEBOARD_WIDTH) + col] = 1;
 }
 
 std::ostream& operator<<(std::ostream& os, const State::TileType& t) {
