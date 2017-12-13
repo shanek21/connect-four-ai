@@ -22,12 +22,6 @@ TEST_CASE("negamax()") {
     REQUIRE(solver.score(S) > 0);
     S = State::boardFromNums("24617524315172127");
     REQUIRE(solver.score(S) > 0);
-    // This takes about 4 seconds
-    /* S = State::boardFromNums("7234472553"); */
-    /* REQUIRE(solver.score(S) == 10); */
-    // This is unsolvable (for now)
-    /* S = State::boardFromNums("266674777"); */
-    /* REQUIRE(solver.score(S) == 4); */
   }
   SECTION("Draw") {
     State S = State::boardFromNums("74425337641465475671176741236615215533");
@@ -38,5 +32,13 @@ TEST_CASE("negamax()") {
     REQUIRE(solver.score(S) == 0);
     S = State::boardFromNums("7172212567451542223676134464437761515");
     REQUIRE(solver.score(S) == 0);
+  }
+  SECTION("Broken1") {
+    State S = State::boardFromNums("427631264721");
+    REQUIRE(solver.score(S) == 10);
+  }
+  SECTION("Broken2") {
+    State S = State::boardFromNums("11163142533736577");
+    REQUIRE(solver.score(S) == 2);
   }
 }
