@@ -3,6 +3,7 @@
 
 
 #include <bitset>
+#include <list>
 #include <string>
 
 
@@ -53,6 +54,10 @@ class State {
   State play(TileType tile, int col) const;
 
   bool isPlayable(int col) const;
+
+  TileType getMostRecentMoveColor() const;
+
+  std::list<int> getWinningMoves(TileType color) const;
 
   bool isWinningPlay(TileType color, int col) const;
 

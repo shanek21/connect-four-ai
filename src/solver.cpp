@@ -59,13 +59,26 @@ int8_t Solver::negamax(State s, int8_t lowerBound, int8_t upperBound) {
     return score;
   }
 
-  // Assume current player will lose
-  int8_t bestSoFar = s.getNumMoves() - s.getBoardSize();
+  // Assume current player will lose on the next turn
+  int8_t bestSoFar = (s.getNumMoves() - s.getBoardSize()) / 2;
 
-  for (auto it = moveOrder.begin(); it != moveOrder.end(); it++) {
+  std::list<int> movesToExplore = moveOrder;
+
+  // Check if our opponent has any winning moves, and if they do, try to block
+  // them
+  std::list<int> opponentWinningMoves =
+    s.getWinningMoves(s.getMostRecentMoveColor());
+
+  if (!opponentWinningMoves.empty())
+    movesToExplore = opponentWinningMoves;
+
+  for (auto it = movesToExplore.begin(); it != movesToExplore.end(); it++) {
     int x = *it;
     if (!s.isPlayable(x)) continue;
     State nextState = s.play(x);
+    // If this move gives our opponent a win, don't consider it
+    if (nextState.isPlayable(x) &&
+        nextState.isWinningPlay(nextState.getNextTileColor(), x)) continue;
     // Negative scores for our opponent are positive for us
     int8_t positionScore = -negamax(nextState, -upperBound, -lowerBound);
     bestSoFar = std::max(bestSoFar, positionScore);

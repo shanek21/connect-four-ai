@@ -144,6 +144,18 @@ void State::placeTile(State::TileType color, int row, int col) {
     blackBoard[(row * (WIDTH + 1)) + col] = 1;
 }
 
+State::TileType State::getMostRecentMoveColor() const {
+  return (numMoves % 2 == 1) ? Red : Black;
+}
+
+std::list<int> State::getWinningMoves(TileType color) const {
+  std::list<int> res;
+  for (int i = 0; i < WIDTH; i++) {
+    if (isPlayable(i) && isWinningPlay(color, i)) res.push_back(i);
+  }
+  return res;
+}
+
 std::ostream& operator<<(std::ostream& os, const State::TileType& t) {
   if (t == State::Red) return os << "R";
   if (t == State::Black) return os << "B";
