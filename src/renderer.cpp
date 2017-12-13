@@ -65,6 +65,45 @@ int waitUntilOptionSelected(const char* title,
   return selection;
 }
 
+void renderMoveOptions(State s, int selection) {
+  for (int i = 0; i < State::WIDTH; i++) {
+    // Highlight the currently selected board column
+    if (i == selection) {
+      attron(A_BOLD);
+      mvaddstr(Y_OFFSET + State::HEIGHT + 2, X_OFFSET + tileOffsets[i], "^");
+      attroff(A_BOLD);
+    } else {
+      mvaddstr(Y_OFFSET + State::HEIGHT + 2, X_OFFSET + tileOffsets[i], " ");
+    }
+  }
+}
+
+int waitUntilMoveSelected(State s) {
+  char userInput;
+  int selection = 0;
+
+  while (userInput != SELECT_KEY) {
+    // Non-blocking user-input
+    timeout(10);
+    userInput = getch();
+
+    // Navigate through the menu based on user-input
+    switch (userInput) {
+      case LEFT_KEY:
+        decrementWithMin(&selection, 0);
+        break;
+      case RIGHT_KEY:
+        incrementWithMax(&selection, State::WIDTH-1);
+        break;
+    }
+
+    // Render the menu
+    renderMoveOptions(s, selection);
+  }
+
+  return selection;
+}
+
 void displayGrid(State s) {
   mvaddstr(Y_OFFSET, X_OFFSET, "=============================");
   for (int y = Y_OFFSET + 1; y <= Y_OFFSET + State::HEIGHT + 1; y++) {
@@ -126,15 +165,15 @@ State setupScreen(State s) {
   }
   mvaddstr(Y_OFFSET + State::HEIGHT + 1, X_OFFSET,
       "=============================");
-  mvprintw(Y_OFFSET + State::HEIGHT + 2, X_OFFSET, "Game Mode: %i", selection);
+  mvprintw(Y_OFFSET + State::HEIGHT + 4, X_OFFSET, "Game Mode: %i", selection);
   refresh();
   return s;
 }
 
 void shutDownScreen() {
-  char userInput;
+  char userInput;                   // Must use quit key to confirm exit
   while (userInput != QUIT_KEY) {
-    userInput = getch();           // Wait for user input
+    userInput = getch();            // Wait for user input
   }
   endwin();                         // End curses mode
 }

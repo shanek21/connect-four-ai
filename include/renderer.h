@@ -24,11 +24,7 @@
 #define RESUME_KEY 'r'
 #define SELECT_KEY '\n'
 
-
-void renderMenu(const char* title,
-                const char** items,
-                int num_items,
-                int selection);
+int waitUntilMoveSelected(State s);
 void displayGrid(State s);
 State setupScreen(State s);
 void shutDownScreen();
