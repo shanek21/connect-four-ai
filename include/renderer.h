@@ -1,7 +1,6 @@
 #ifndef INCLUDE_RENDERER_H_
 #define INCLUDE_RENDERER_H_
 
-
 #include <ncurses.h>
 #include <string>
 #include "./state.h"
@@ -25,7 +24,7 @@
 #define SELECT_KEY '\n'
 #define HINT_KEY   '?'
 
-#define QUIT_GAME      -1
+#define QUIT_GAME  -1
 
 State setupScreen(State s);
 void shutDownScreen();

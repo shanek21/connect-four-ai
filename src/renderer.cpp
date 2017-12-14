@@ -212,11 +212,25 @@ void PvP(State s, Solver solver) {
   while (!gameFinished) {  // Play until someone wins or draws
     currPlayer = s.getNextTileColor();
     int selection = waitUntilMoveSelected(s, solver);
-    if (selection == -1) {
+    if (selection == QUIT_GAME) {
       gameFinished = 1;
       break;
     }
     gameFinished = gameFinished || s.isWinningPlay(currPlayer, selection);
+    s = s.play(selection);
+    displayGrid(s);
+    gameFinished = gameFinished || s.isBoardFull();
+  }
+}
+
+void CvC(State s, Solver solver) {
+  State::TileType currPlayer;
+  bool gameFinished = false;
+  while (!gameFinished) {  // Play until someone wins or draws
+    currPlayer = s.getNextTileColor();
+    int selection = solver.bestMove(s);
+    gameFinished = gameFinished || s.isWinningPlay(currPlayer, selection);
+    renderMoveOptions(s, selection, false);
     s = s.play(selection);
     displayGrid(s);
     gameFinished = gameFinished || s.isBoardFull();
@@ -229,7 +243,9 @@ void gamePlay(State s, Solver solver) {
       break;
     case State::PvP:
       PvP(s, solver);
+      break;
     case State::CvC:
+      CvC(s, solver);
       break;
   }
 }
