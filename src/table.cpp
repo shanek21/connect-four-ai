@@ -3,10 +3,9 @@
 #include <iostream>
 #include "../include/table.h"
 
-Table::Table(uint32_t numBits) {
+Table::Table(uint32_t storedBoards) {
   int entryMem = sizeof(Entry);
   assert(entryMem == 8);  // should be 8 bytes
-  int storedBoards = numBits / sizeof(Entry);
   table.resize(storedBoards, {0, EMPTY_VAL});  // fill vector with EMPTY_VAL
 }
 
