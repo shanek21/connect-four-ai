@@ -4,7 +4,8 @@
 #include <cassert>
 #include "../include/solver.h"
 
-Solver::Solver() : table(67108744) {  // use ~64 MB of data
+// Use ~64 MB of data, since each board is 8 bytes
+Solver::Solver() : table(8388593) {
   initMoveOrder(State::WIDTH);
 }
 
