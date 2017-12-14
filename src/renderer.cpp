@@ -66,6 +66,13 @@ int waitUntilOptionSelected(const char* title,
 }
 
 void renderMoveOptions(State s, int selection, bool hintRequested) {
+  State::TileType currPlayer = s.getNextTileColor();
+  if (currPlayer == State::Red) {    // Change cursor color based on tile
+    attron(COLOR_PAIR(1));
+  }
+  if (currPlayer == State::Black) {  // Change cursor color based on tile
+    attron(COLOR_PAIR(2));
+  }
   for (int i = 0; i < State::WIDTH; i++) {
     // Highlight the currently selected board column
     if (i == selection) {
@@ -80,6 +87,8 @@ void renderMoveOptions(State s, int selection, bool hintRequested) {
       mvaddstr(Y_OFFSET + State::HEIGHT + 2, X_OFFSET + tileOffsets[i], " ");
     }
   }
+  attroff(COLOR_PAIR(1));
+  attroff(COLOR_PAIR(2));
 }
 
 int waitUntilMoveSelected(State s, Solver solver) {
@@ -179,12 +188,7 @@ State setupScreen(State s) {
       break;
   }
 
-  mvaddstr(Y_OFFSET, X_OFFSET, "=============================");
-  for (int y = Y_OFFSET + 1; y <= Y_OFFSET + State::HEIGHT + 1; y++) {
-    mvaddstr(y, X_OFFSET, "|   |   |   |   |   |   |   |");
-  }
-  mvaddstr(Y_OFFSET + State::HEIGHT + 1, X_OFFSET,
-      "=============================");
+  displayGrid(s);
   mvprintw(Y_OFFSET + State::HEIGHT + 4, X_OFFSET,
       "Game Mode: %s", items[selection]);
   mvprintw(Y_OFFSET + State::HEIGHT + 5, X_OFFSET, "Press 'q' to quit.");
