@@ -132,7 +132,9 @@ void displayGrid(State s) {
   }
   mvaddstr(Y_OFFSET + State::HEIGHT + 1, X_OFFSET,
       "=============================");
-  mvprintw(Y_OFFSET + State::HEIGHT + 6, X_OFFSET, "Press '?' for a hint.");
+  if (s.getNumMoves() > 9) {
+    mvprintw(Y_OFFSET + State::HEIGHT + 6, X_OFFSET, "Press '?' for a hint.");
+  }
   refresh();
 }
 
