@@ -104,9 +104,11 @@ int waitUntilMoveSelected(State s, Solver solver) {
     // Navigate through the menu based on user-input
     switch (userInput) {
       case LEFT_KEY:
+        hintRequested = false;
         decrementWithMin(&selection, 0);
         break;
       case RIGHT_KEY:
+        hintRequested = false;
         incrementWithMax(&selection, State::WIDTH-1);
         break;
       case QUIT_KEY:
@@ -122,7 +124,7 @@ int waitUntilMoveSelected(State s, Solver solver) {
     }
 
     // Render the menu
-    if (selection != -1) {
+    if (selection != QUIT_GAME) {
       renderMoveOptions(s, selection, hintRequested);
     }
   }
