@@ -205,3 +205,14 @@ void PvP(State s) {
     gameFinished = gameFinished || s.isBoardFull();
   }
 }
+
+void gamePlay(State s) {
+  switch (s.gameType) {
+    case State::PvC:
+      break;
+    case State::PvP:
+      PvP(s);
+    case State::CvC:
+      break;
+  }
+}
