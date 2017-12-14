@@ -80,7 +80,7 @@ void renderMoveOptions(State s, int selection) {
 
 int waitUntilMoveSelected(State s) {
   char userInput;
-  int selection = 0;
+  int selection = 3;
 
   while (userInput != SELECT_KEY) {
     // Non-blocking user-input
@@ -95,10 +95,16 @@ int waitUntilMoveSelected(State s) {
       case RIGHT_KEY:
         incrementWithMax(&selection, State::WIDTH-1);
         break;
+      case QUIT_KEY:
+        selection = -1;
+        userInput = SELECT_KEY;
+        break;
     }
 
     // Render the menu
-    renderMoveOptions(s, selection);
+    if (selection != -1) {
+      renderMoveOptions(s, selection);
+    }
   }
 
   return selection;
@@ -126,6 +132,7 @@ void displayGrid(State s) {
   }
   mvaddstr(Y_OFFSET + State::HEIGHT + 1, X_OFFSET,
       "=============================");
+  mvprintw(Y_OFFSET + State::HEIGHT + 6, X_OFFSET, "Press '?' for a hint.");
   refresh();
 }
 
@@ -165,7 +172,9 @@ State setupScreen(State s) {
   }
   mvaddstr(Y_OFFSET + State::HEIGHT + 1, X_OFFSET,
       "=============================");
-  mvprintw(Y_OFFSET + State::HEIGHT + 4, X_OFFSET, "Game Mode: %i", selection);
+  mvprintw(Y_OFFSET + State::HEIGHT + 4, X_OFFSET,
+      "Game Mode: %s", items[selection]);
+  mvprintw(Y_OFFSET + State::HEIGHT + 5, X_OFFSET, "Press 'q' to quit.");
   refresh();
   return s;
 }
@@ -182,11 +191,15 @@ void PvP(State s) {
   State::TileType currPlayer;
   bool gameFinished = false;
   int selection;
-  while (!gameFinished) {
+
+  while (!gameFinished) {  // Play until someone wins or draws
     currPlayer = s.getNextTileColor();
     selection = waitUntilMoveSelected(s);
+    if (selection == -1) {
+      gameFinished = 1;
+      break;
+    }
     gameFinished = gameFinished || s.isWinningPlay(currPlayer, selection);
-    printw("%i", selection);
     s = s.play(selection);
     displayGrid(s);
     gameFinished = gameFinished || s.isBoardFull();
