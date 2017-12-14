@@ -23,6 +23,9 @@
 #define SELECT_KEY '\n'
 #define HINT_KEY   '?'
 
+#define QUIT_GAME      -1
+#define HINT_REQUESTED -2
+
 State setupScreen(State s);
 void shutDownScreen();
 void gamePlay(State s);

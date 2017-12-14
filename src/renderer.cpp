@@ -65,12 +65,16 @@ int waitUntilOptionSelected(const char* title,
   return selection;
 }
 
-void renderMoveOptions(State s, int selection) {
+void renderMoveOptions(State s, int selection, bool hintRequested) {
   for (int i = 0; i < State::WIDTH; i++) {
     // Highlight the currently selected board column
     if (i == selection) {
       attron(A_BOLD);
-      mvaddstr(Y_OFFSET + State::HEIGHT + 2, X_OFFSET + tileOffsets[i], "^");
+      if (hintRequested) {
+        mvaddstr(Y_OFFSET + State::HEIGHT + 2, X_OFFSET + tileOffsets[i], "*");
+      } else {
+        mvaddstr(Y_OFFSET + State::HEIGHT + 2, X_OFFSET + tileOffsets[i], "^");
+      }
       attroff(A_BOLD);
     } else {
       mvaddstr(Y_OFFSET + State::HEIGHT + 2, X_OFFSET + tileOffsets[i], " ");
@@ -81,6 +85,7 @@ void renderMoveOptions(State s, int selection) {
 int waitUntilMoveSelected(State s) {
   char userInput;
   int selection = 3;
+  bool hintRequested = false;
 
   while (userInput != SELECT_KEY) {
     // Non-blocking user-input
@@ -96,14 +101,18 @@ int waitUntilMoveSelected(State s) {
         incrementWithMax(&selection, State::WIDTH-1);
         break;
       case QUIT_KEY:
-        selection = -1;
+        selection = QUIT_GAME;
         userInput = SELECT_KEY;
+        break;
+      case HINT_KEY:
+        hintRequested = true;
+        selection = 2;
         break;
     }
 
     // Render the menu
     if (selection != -1) {
-      renderMoveOptions(s, selection);
+      renderMoveOptions(s, selection, hintRequested);
     }
   }
 
@@ -192,11 +201,9 @@ void shutDownScreen() {
 void PvP(State s) {
   State::TileType currPlayer;
   bool gameFinished = false;
-  int selection;
-
   while (!gameFinished) {  // Play until someone wins or draws
     currPlayer = s.getNextTileColor();
-    selection = waitUntilMoveSelected(s);
+    int selection = waitUntilMoveSelected(s);
     if (selection == -1) {
       gameFinished = 1;
       break;
