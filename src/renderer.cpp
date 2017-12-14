@@ -82,7 +82,7 @@ void renderMoveOptions(State s, int selection, bool hintRequested) {
   }
 }
 
-int waitUntilMoveSelected(State s) {
+int waitUntilMoveSelected(State s, Solver solver) {
   char userInput;
   int selection = 3;
   bool hintRequested = false;
@@ -105,8 +105,10 @@ int waitUntilMoveSelected(State s) {
         userInput = SELECT_KEY;
         break;
       case HINT_KEY:
+        // TODO(davidabrahams): make sure this doesn't run if hint limit is not
+        //   reached
         hintRequested = true;
-        selection = 2;
+        selection = solver.bestMove(s);
         break;
     }
 
@@ -141,7 +143,7 @@ void displayGrid(State s) {
   }
   mvaddstr(Y_OFFSET + State::HEIGHT + 1, X_OFFSET,
       "=============================");
-  if (s.getNumMoves() > 9) {
+  if (s.getNumMoves() > HINT_LIMIT) {
     mvprintw(Y_OFFSET + State::HEIGHT + 6, X_OFFSET, "Press '?' for a hint.");
   }
   refresh();
@@ -198,12 +200,12 @@ void shutDownScreen() {
   endwin();                         // End curses mode
 }
 
-void PvP(State s) {
+void PvP(State s, Solver solver) {
   State::TileType currPlayer;
   bool gameFinished = false;
   while (!gameFinished) {  // Play until someone wins or draws
     currPlayer = s.getNextTileColor();
-    int selection = waitUntilMoveSelected(s);
+    int selection = waitUntilMoveSelected(s, solver);
     if (selection == -1) {
       gameFinished = 1;
       break;
@@ -215,12 +217,12 @@ void PvP(State s) {
   }
 }
 
-void gamePlay(State s) {
+void gamePlay(State s, Solver solver) {
   switch (s.gameType) {
     case State::PvC:
       break;
     case State::PvP:
-      PvP(s);
+      PvP(s, solver);
     case State::CvC:
       break;
   }

@@ -9,7 +9,7 @@ const int8_t EMPTY_VAL = std::numeric_limits<int8_t>::min();
 
 class Table {
  public:
-  explicit Table(uint32_t numBits);
+  explicit Table(uint32_t storedBoards);
   void put(uint64_t boardKey, int8_t score);
   void reset();
   int8_t get(uint64_t boardKey);
