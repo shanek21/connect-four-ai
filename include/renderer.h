@@ -15,6 +15,7 @@
 #define MENU_ROW 20
 
 // Controls
+<<<<<<< HEAD
 #define UP_KEY     'k'
 #define DOWN_KEY   'j'
 #define LEFT_KEY   'h'
@@ -22,6 +23,16 @@
 #define QUIT_KEY   'q'
 #define SELECT_KEY '\n'
 #define HINT_KEY   '?'
+=======
+#define UP_KEY 'k'
+#define DOWN_KEY 'j'
+#define LEFT_KEY 'h'
+#define RIGHT_KEY 'l'
+#define PAUSE_KEY 'p'
+#define QUIT_KEY 'q'
+#define RESUME_KEY 'r'
+#define SELECT_KEY '\n'
+>>>>>>> 52d7d7b2c5b44d48797024824c304c09bb48d68d
 
 int waitUntilMoveSelected(State s);
 void displayGrid(State s);
