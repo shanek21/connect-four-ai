@@ -153,6 +153,6 @@ int Solver::score(State s) {
 }
 
 int Solver::bestMove(State s) {
-  return bestMoveAndScore(s).first;
+  return negamax(s, -21, 21).first;
 }
 

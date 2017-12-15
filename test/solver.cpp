@@ -29,6 +29,7 @@ TEST_CASE("score()") {
     S = State::boardFromNums("12514726155174536522772517671");
     REQUIRE(solver.score(S) < 0);
   }
+
   SECTION("Winning") {
     State S = State::boardFromNums("7422341735647741166133573473242566");
     REQUIRE(solver.score(S) > 0);
